@@ -50,6 +50,8 @@
     "git.enableSmartCommit" = true;
     "security.workspace.trust.untrustedFiles" = "open";
     "displayLanguage" = "zh-hant";
+    "update.mode" = "none";
+    "update.enableWindowsBackgroundUpdates" = false;
   };
 in {
   programs.vscode = {
