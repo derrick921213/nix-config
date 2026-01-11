@@ -1,27 +1,15 @@
 {
-  stdenv,
+  config,
+  pkgs,
   lib,
-  unzip,
   ...
-}:
-stdenv.mkDerivation {
-  pname = "dropshelf";
-  version = "1729";
+}: let
+  dropshelf = pkgs.callPackage ./dropshelf-package.nix {};
+in {
+  home.packages = [dropshelf];
 
-  src = ./Dropshelf-build-1729.zip;
-
-  nativeBuildInputs = [unzip];
-
-  unpackPhase = ''
-    unzip $src
+  home.activation.linkDropshelf = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p "$HOME/Applications"
+    ln -sf ${dropshelf}/Applications/*.app "$HOME/Applications/"
   '';
-
-  installPhase = ''
-    mkdir -p $out/Applications
-    cp -R *.app $out/Applications/
-  '';
-
-  meta = with lib; {
-    platforms = platforms.darwin;
-  };
 }
