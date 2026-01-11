@@ -47,6 +47,7 @@
     "editor.formatOnSave" = true;
     "workbench.colorTheme" = "Firefly Pro";
     "workbench.iconTheme" = "material-icon-theme";
+    "git.enableSmartCommit" = true;
   };
 in {
   programs.vscode = {
