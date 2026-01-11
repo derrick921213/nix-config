@@ -11,7 +11,6 @@
         charliermarsh.ruff
         ms-python.vscode-pylance
         detachhead.basedpyright
-        tomasvergara.vscode-fastapi-snippets
         humao.rest-client
       ]);
     userSettings =
