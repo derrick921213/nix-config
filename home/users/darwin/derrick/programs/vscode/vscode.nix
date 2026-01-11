@@ -39,19 +39,98 @@
     oderwat.indent-rainbow
     path-autocomplete
     path-intellisense
+    gruntfuggly.todo-tree
   ];
   commonUserSettings = {
     "editor.fontFamily" = "JetBrainsMono Nerd Font";
-    "editor.fontSize" = 14;
+    "editor.fontSize" = 16;
     "files.autoSave" = "afterDelay";
     "editor.formatOnSave" = true;
-    "workbench.colorTheme" = "FireFly Pro";
+    "workbench.colorTheme" = "FireFly Pro Bright";
     "workbench.iconTheme" = "material-icon-theme";
     "git.enableSmartCommit" = true;
     "security.workspace.trust.untrustedFiles" = "open";
     "displayLanguage" = "zh-hant";
     "update.mode" = "none";
     "update.enableWindowsBackgroundUpdates" = false;
+    "explorer.confirmDragAndDrop" = false;
+    "git.autofetch" = true;
+    "editor.fontLigatures" = "'ss08', 'calt', 'cv01'";
+    "editor.stickyScroll.enabled" = true;
+    "editor.stickyScroll.scrollWithEditor" = true;
+    "editor.wordWrap" = "on";
+    "git.confirmSync" = false;
+    "editor.wrappingIndent" = "indent";
+    "highlight.regexes" = {
+      "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *TODO(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" = {
+        "filterFileRegex" = ".*(?<!CHANGELOG.md)$";
+        "decorations" = [
+          {
+            "overviewRulerColor" = "#ffcc00";
+            "backgroundColor" = "#ffcc00";
+            "color" = "#1f1f1f";
+            "fontWeight" = "bold";
+          }
+          {
+            "backgroundColor" = "#ffcc00";
+            "color" = "#1f1f1f";
+          }
+        ];
+      };
+
+      "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:FIXME|FIX|BUG|UGLY|DEBUG|HACK)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" = {
+        "filterFileRegex" = ".*(?<!CHANGELOG.md)$";
+        "decorations" = [
+          {
+            "overviewRulerColor" = "#cc0000";
+            "backgroundColor" = "#cc0000";
+            "color" = "#1f1f1f";
+            "fontWeight" = "bold";
+          }
+          {
+            "backgroundColor" = "#cc0000";
+            "color" = "#1f1f1f";
+          }
+        ];
+      };
+
+      "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:REVIEW|OPTIMIZE|TSC)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" = {
+        "filterFileRegex" = ".*(?<!CHANGELOG.md)$";
+        "decorations" = [
+          {
+            "overviewRulerColor" = "#00ccff";
+            "backgroundColor" = "#00ccff";
+            "color" = "#1f1f1f";
+            "fontWeight" = "bold";
+          }
+          {
+            "backgroundColor" = "#00ccff";
+            "color" = "#1f1f1f";
+          }
+        ];
+      };
+
+      "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:IDEA)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" = {
+        "filterFileRegex" = ".*(?<!CHANGELOG.md)$";
+        "decorations" = [
+          {
+            "overviewRulerColor" = "#cc00cc";
+            "backgroundColor" = "#cc00cc";
+            "color" = "#1f1f1f";
+            "fontWeight" = "bold";
+          }
+          {
+            "backgroundColor" = "#cc00cc";
+            "color" = "#1f1f1f";
+          }
+        ];
+      };
+    };
+    "editor.cursorSmoothCaretAnimation" = "on";
+    "editor.mouseWheelZoom" = true;
+    "explorer.confirmDelete" = false;
+    "workbench.activityBar.location" = "bottom";
+    "window.customTitleBarVisibility" = "windowed";
   };
 in {
   programs.vscode = {
