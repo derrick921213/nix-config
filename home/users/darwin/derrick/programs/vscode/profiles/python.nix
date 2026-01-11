@@ -2,14 +2,13 @@
   pkgs,
   common,
   ...
-}:{
+}: {
   Python = {
     extensions =
       common.commonExtensions
       ++ (with pkgs.vscode-extensions; [
         ms-python.python
         charliermarsh.ruff
-        ms-python.vscode-pylance
         detachhead.basedpyright
         humao.rest-client
       ]);
@@ -18,10 +17,10 @@
       // {
         "python.defaultInterpreterPath" = ".venv/bin/python";
         "python.analysis.typeCheckingMode" = "strict";
-
         "[python]" = {
           "editor.defaultFormatter" = "charliermarsh.ruff";
         };
+        "python.terminal.activateEnvironment" = true;
         "ruff.enable" = true;
         "ruff.organizeImports" = true;
         "basedpyright.enable" = true;
