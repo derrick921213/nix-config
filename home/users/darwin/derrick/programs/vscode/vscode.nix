@@ -27,54 +27,67 @@
       sha256 = "sha256-bE32VmzZBsAqgSxdQAK9OoTcTgutGEtgvw6+RaieqRs=";
     };
   };
+
+  commonExtensions = with pkgs.vscode-extensions; [
+    vscodevim.vim
+    ms-ceintl.vscode-language-pack-zh-hant
+    editorconfig.editorconfig
+    mikestead.dotenv
+    firefly
+    pkief.material-icon-theme
+    mhutchie.git-graph
+    oderwat.indent-rainbow
+    path-autocomplete
+    path-intellisense
+  ];
+  commonUserSettings = {
+    "editor.fontFamily" = "JetBrainsMono Nerd Font";
+    "editor.fontSize" = 14;
+    "files.autoSave" = "afterDelay";
+    "editor.formatOnSave" = true;
+    "workbench.colorTheme" = "Firefly Pro";
+    "workbench.iconTheme" = "material-icon-theme";
+  };
 in {
   programs.vscode = {
     enable = true;
     profiles = {
       default = {
         # vscode 全域設定
-        extensions = with pkgs.vscode-extensions; [
-          vscodevim.vim
-          ms-ceintl.vscode-language-pack-zh-hant
-          editorconfig.editorconfig
-          mikestead.dotenv
-          firefly
-          pkief.material-icon-theme
-          mhutchie.git-graph
-          oderwat.indent-rainbow
-          path-autocomplete
-          path-intellisense
-        ];
-        userSettings = {
-          "editor.fontFamily" = "JetBrainsMono Nerd Font";
-          "editor.fontSize" = 14;
-          "files.autoSave" = "afterDelay";
-          "editor.formatOnSave" = true;
-        };
+        extensions = commonExtensions;
+        userSettings = commonUserSettings;
       };
       Rust = {
-        extensions = with pkgs.vscode-extensions; [
-          rust-lang.rust-analyzer
-          tamasfe.even-better-toml
-          fill-labs.dependi
-          aaron-bond.better-comments
-          alefragnani.bookmarks
-          skellock.just
-        ];
-        userSettings = {
-          "rust-analyzer.check.command" = "clippy";
-          "rust-analyzer.cargo.features" = "all";
-        };
+        extensions =
+          commonExtensions
+          ++ (with pkgs.vscode-extensions; [
+            rust-lang.rust-analyzer
+            tamasfe.even-better-toml
+            fill-labs.dependi
+            aaron-bond.better-comments
+            alefragnani.bookmarks
+            skellock.just
+          ]);
+        userSettings =
+          commonUserSettings
+          // {
+            "rust-analyzer.check.command" = "clippy";
+            "rust-analyzer.cargo.features" = "all";
+          };
       };
       Nix = {
-        extensions = with pkgs.vscode-extensions; [
-          kamadorueda.alejandra
-          bbenoist.nix
-        ];
-        userSettings = {
-          "nix.enableLanguageServer" = true;
-          "nix.formatterPath" = "alejandra";
-        };
+        extensions =
+          commonExtensions
+          ++ (with pkgs.vscode-extensions; [
+            kamadorueda.alejandra
+            bbenoist.nix
+          ]);
+        userSettings =
+          commonUserSettings
+          // {
+            "nix.enableLanguageServer" = true;
+            "nix.formatterPath" = "alejandra";
+          };
       };
     };
   };
