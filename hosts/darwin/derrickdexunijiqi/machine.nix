@@ -16,6 +16,7 @@
       "hammerspoon"
       "firefox"
       "iina"
+      "dropshelf"
     ];
     onActivation.cleanup = "zap";
   };
