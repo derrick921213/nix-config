@@ -4,4 +4,5 @@
   ...
 }: {
   home-manager.users.${user} = import (self + "/home/users/darwin/${user}/default.nix");
+  home-manager.backupFileExtension = "hm-bak";
 }
