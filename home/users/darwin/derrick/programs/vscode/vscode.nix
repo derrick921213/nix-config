@@ -45,7 +45,7 @@
     "editor.fontSize" = 14;
     "files.autoSave" = "afterDelay";
     "editor.formatOnSave" = true;
-    "workbench.colorTheme" = "Firefly Pro";
+    "workbench.colorTheme" = "FireFly Pro";
     "workbench.iconTheme" = "material-icon-theme";
     "git.enableSmartCommit" = true;
   };
