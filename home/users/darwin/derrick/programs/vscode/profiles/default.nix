@@ -1,6 +1,6 @@
-{common}: {
+{
   default = {
-    extensions = common.commonExtensions;
-    userSettings = common.commonUserSettings;
+    extensions = commonExtensions;
+    userSettings = commonUserSettings;
   };
 }

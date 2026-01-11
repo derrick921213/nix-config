@@ -1,16 +1,13 @@
 {
-  pkgs,
-  common,
-}: {
   Nix = {
     extensions =
-      common.commonExtensions
+      commonExtensions
       ++ (with pkgs.vscode-extensions; [
         kamadorueda.alejandra
         bbenoist.nix
       ]);
     userSettings =
-      common.commonUserSettings
+      commonUserSettings
       // {
         "nix.enableLanguageServer" = true;
         "nix.formatterPath" = "alejandra";
