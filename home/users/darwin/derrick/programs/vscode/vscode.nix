@@ -48,6 +48,7 @@
     "workbench.colorTheme" = "FireFly Pro";
     "workbench.iconTheme" = "material-icon-theme";
     "git.enableSmartCommit" = true;
+    "security.workspace.trust.untrustedFiles": "open"
   };
 in {
   programs.vscode = {
