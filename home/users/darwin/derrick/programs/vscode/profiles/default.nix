@@ -1,6 +1,10 @@
 {
+  pkgs,
+  common,
+  ...
+}: {
   default = {
-    extensions = commonExtensions;
-    userSettings = commonUserSettings;
+    extensions = common.commonExtensions;
+    userSettings = common.commonUserSettings;
   };
 }

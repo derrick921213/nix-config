@@ -1,7 +1,11 @@
 {
+  pkgs,
+  common,
+  ...
+}: {
   Rust = {
     extensions =
-      commonExtensions
+      common.commonExtensions
       ++ (with pkgs.vscode-extensions; [
         rust-lang.rust-analyzer
         tamasfe.even-better-toml
@@ -11,7 +15,7 @@
         skellock.just
       ]);
     userSettings =
-      commonUserSettings
+      common.commonUserSettings
       // {
         "rust-analyzer.check.command" = "clippy";
         "rust-analyzer.cargo.features" = "all";

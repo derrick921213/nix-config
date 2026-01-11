@@ -1,7 +1,11 @@
 {
+  pkgs,
+  common,
+  ...
+}:{
   Python = {
     extensions =
-      commonExtensions
+      common.commonExtensions
       ++ (with pkgs.vscode-extensions; [
         ms-python.python
         charliermarsh.ruff
@@ -11,7 +15,7 @@
         humao.rest-client
       ]);
     userSettings =
-      commonUserSettings
+      common.commonUserSettings
       // {
         "python.defaultInterpreterPath" = ".venv/bin/python";
         "python.analysis.typeCheckingMode" = "strict";
