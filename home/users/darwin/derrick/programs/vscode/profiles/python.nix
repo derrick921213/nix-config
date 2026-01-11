@@ -26,8 +26,8 @@
         "basedpyright.enable" = true;
         "python.testing.pytestEnabled" = true;
         "editor.codeActionsOnSave" = {
-          "source.fixAll.ruff" = true;
-          "source.organizeImports.ruff" = true;
+          "source.fixAll.ruff" = "explicit";
+          "source.organizeImports.ruff" = "explicit";
         };
       };
   };
