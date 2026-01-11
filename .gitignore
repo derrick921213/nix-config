@@ -1,0 +1,51 @@
+# Nix build result symlink
+/result
+/result-*
+
+# direnv
+.direnv
+.envrc.local
+
+# Nix shells & profiles
+.nix-profile
+.nix-defexpr
+.nix-channels
+
+# nix repl history
+.nix-repl-history
+
+# Flake lock backup
+flake.lock.bak
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Logs
+*.log
+
+# Node / frontend (如果有)
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Rust
+target/
+
+# Temporary files
+tmp/
+.cache/
