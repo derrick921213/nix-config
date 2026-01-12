@@ -88,6 +88,12 @@ require("lazy").setup({
     end,
   },
 
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+  },
+
   -- 主題
   { "catppuccin/nvim", name = "catppuccin" },
 
