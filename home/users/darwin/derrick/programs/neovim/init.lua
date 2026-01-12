@@ -32,6 +32,9 @@ require("lazy").setup({
 
   -- 補全
   { "hrsh7th/nvim-cmp" },
+  dependencies = {
+    "hrsh7th/cmp-path",
+  },
   { "hrsh7th/cmp-nvim-lsp" },
 
   -- Tree-sitter
@@ -93,6 +96,8 @@ require("lazy").setup({
     event = "InsertEnter",
     config = true,
   },
+  -- Comment
+  "numToStr/Comment.nvim",
 
   -- 主題
   { "catppuccin/nvim", name = "catppuccin" },
@@ -125,6 +130,8 @@ cmp.setup({
   },
   sources = {
     { name = "nvim_lsp" },
+    { name = "path" },   -- 檔案路徑補全
+    { name = "buffer" }, -- 文字補全
   },
 })
 
