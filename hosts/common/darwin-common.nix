@@ -42,11 +42,11 @@
 
   home-manager = {
     networking.hostName = hostname;
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-    home-manager.extraSpecialArgs = {inherit inputs;};
-    home-manager.backupFileExtension = "backup";
-    home-manager.users.${user} = {imports = [(import (self + "/home/users/darwin/${user}/default.nix"))];};
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = {inherit inputs;};
+    backupFileExtension = "backup";
+    users.${user} = {imports = [(import (self + "/home/users/darwin/${user}/default.nix"))];};
   };
 
   nix-homebrew = {
