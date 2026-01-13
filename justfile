@@ -7,7 +7,7 @@ hostname := `hostname | cut -d "." -f 1`
 [macos]
 build target_host=hostname flags="":
   @echo "Building nix-darwin config..."
-  @nix --extra-experimental-features 'nix-command flakes'  build ".#darwinConfigurations.{{target_host}}.system" {{flags}}
+  nix --extra-experimental-features 'nix-command flakes'  build ".#darwinConfigurations.{{target_host}}.system" {{flags}}
 
 # 編譯nix-darwin config 並加上 --show-trace 旗標
 [macos]
