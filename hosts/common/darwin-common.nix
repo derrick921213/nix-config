@@ -43,7 +43,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {inherit inputs self;};
     backupFileExtension = "backup";
     users.${user} = {imports = [(import (self + "/home/users/darwin/${user}/default.nix"))];};
   };
