@@ -102,20 +102,28 @@
       };
     }) (defs.nixos or {});
 
-    mkHomeSet = nixpkgs.lib.mapAttrs (
-      _: spec:
-        mkHome {
-          system = spec.system;
-          user = spec.user;
-          homeModule = spec.module;
-          pkgs = mkPkgs spec.system;
-          extraSpecialArgs = {inherit inputs;};
-        }
-    ) (defs.hm or {});
+    mkHomeSet = nixpkgs.lib.mapAttrs' (name: spec: {
+      name = name;
+      value = mkHome {
+        system = spec.system;
+        user = spec.user;
+        homeModule = spec.module;
+        pkgs = mkPkgs spec.system;
+        extraSpecialArgs = {
+          inherit inputs;
+          hostname = name;
+        };
+      };
+    }) (defs.hm or {});
   in {
     darwinConfigurations = mkDarwinSet;
     nixosConfigurations = mkNixosSet;
     homeConfigurations = mkHomeSet;
+    hosts = {
+      darwin = builtins.attrNames mkDarwinSet;
+      nixos = builtins.attrNames mkNixosSet;
+      home = builtins.attrNames mkHomeSet;
+    };
   };
 in {
   inherit mkPkgsFor mkDarwinHost mkNixosHost mkHome mkOutputs;

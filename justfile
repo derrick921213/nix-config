@@ -7,7 +7,7 @@ hostname := `hostname | cut -d "." -f 1`
 [macos]
 build target_host=hostname flags="":
   @echo "Building nix-darwin config..."
-  nix --extra-experimental-features 'nix-command flakes'  build ".#darwinConfigurations.{{target_host}}.system" {{flags}}
+  @nix --extra-experimental-features 'nix-command flakes'  build ".#darwinConfigurations.{{target_host}}.system" {{flags}}
 
 # 編譯nix-darwin config 並加上 --show-trace 旗標
 [macos]
@@ -43,7 +43,10 @@ switch target_host=hostname: (build target_host)
 
 # 更新flake 輸入來源到最新
 update:
-  nix flake update
+  @nix flake update
+
+show-hosts:
+  @nix eval .#hosts --json | jq
 
 ## remote nix vm installation
 # install IP:
@@ -58,9 +61,9 @@ update:
 
 # 移除舊的OS世代及沒有使用的packages
 gc:
-  nix-collect-garbage -d
-  nix-collect-garbage --delete-older-than 7d
-  nix-store --gc
+  @nix-collect-garbage -d
+  @nix-collect-garbage --delete-older-than 7d
+  @nix-store --gc
 
 ## manual command for initial bootstrapping
 ## sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
