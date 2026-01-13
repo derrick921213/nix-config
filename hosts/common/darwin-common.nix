@@ -11,7 +11,7 @@
     inputs.nix-homebrew.darwinModules.nix-homebrew
     inputs.home-manager.darwinModules.home-manager
   ];
-
+  networking.hostName = hostname;
   users.users.${user} = {
     home = "/Users/${user}";
     shell = pkgs.zsh;
@@ -41,7 +41,6 @@
   };
 
   home-manager = {
-    networking.hostName = hostname;
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {inherit inputs;};
