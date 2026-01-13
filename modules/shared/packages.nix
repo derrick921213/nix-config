@@ -14,5 +14,6 @@
     alejandra
     home-manager
     neofetch
+    mkcert
   ];
 }
