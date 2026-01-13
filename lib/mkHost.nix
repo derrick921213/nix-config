@@ -27,12 +27,7 @@
       specialArgs = specialArgs // {inherit self user;};
       modules = [
         hostModule
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {inherit inputs self user;};
-        }
+        (import (self + "/hosts/common/darwin-common.nix"))
       ];
     };
 
@@ -79,27 +74,33 @@
 
     mkPkgs = system: mkPkgsFor {inherit system overlays allowUnfree;};
 
-    mkDarwinSet = nixpkgs.lib.mapAttrs (
-      _: spec:
-        mkDarwinHost {
-          system = spec.system;
-          user = spec.user;
-          hostModule = spec.module;
-          pkgs = mkPkgs spec.system;
-          specialArgs = {inherit inputs;};
-        }
-    ) (defs.darwin or {});
+    mkDarwinSet = nixpkgs.lib.mapAttrs' (name: spec: {
+      name = name;
+      value = mkDarwinHost {
+        system = spec.system;
+        user = spec.user;
+        hostModule = spec.module;
+        pkgs = mkPkgs spec.system;
+        specialArgs = {
+          inherit inputs;
+          hostname = name;
+        };
+      };
+    }) (defs.darwin or {});
 
-    mkNixosSet = nixpkgs.lib.mapAttrs (
-      _: spec:
-        mkNixosHost {
-          system = spec.system;
-          user = spec.user;
-          hostModule = spec.module;
-          pkgs = mkPkgs spec.system;
-          specialArgs = {inherit inputs;};
-        }
-    ) (defs.nixos or {});
+    mkNixosSet = nixpkgs.lib.mapAttrs' (name: spec: {
+      name = name;
+      value = mkNixosHost {
+        system = spec.system;
+        user = spec.user;
+        hostModule = spec.module;
+        pkgs = mkPkgs spec.system;
+        specialArgs = {
+          inherit inputs;
+          hostname = name;
+        };
+      };
+    }) (defs.nixos or {});
 
     mkHomeSet = nixpkgs.lib.mapAttrs (
       _: spec:
