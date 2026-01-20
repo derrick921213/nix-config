@@ -41,10 +41,10 @@ cbuild:
 capply:
   colmena apply
 
-cbuild-on target_host *args:
+cbuild-on target_host *args="":
   colmena build --on {{target_host}} {{args}}
 
-capply target_host *args:
+capply-on target_host *args="":
   colmena apply --on {{target_host}} {{args}}
 
 # 更新flake 輸入來源到最新
