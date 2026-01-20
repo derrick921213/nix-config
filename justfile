@@ -21,25 +21,31 @@ switch target_host=hostname: (build target_host)
 
 ### linux
 # Build the NixOS configuration without switching to it
-# [linux]
-# build target_host=hostname flags="":
-# 	nixos-rebuild build --flake .#{{target_host}} {{flags}}
+[linux]
+build target_host=hostname flags="":
+	nixos-rebuild build --flake .#{{target_host}} {{flags}}
 
 # Build the NixOS config with the --show-trace flag set
-# [linux]
-# trace target_host=hostname: (build target_host "--show-trace")
+[linux]
+trace target_host=hostname: (build target_host "--show-trace")
 
 # Build the NixOS configuration and switch to it.
-# [linux]
-# switch target_host=hostname:
-#   sudo nixos-rebuild switch --flake .#{{target_host}}
+[linux]
+switch target_host=hostname:
+  sudo nixos-rebuild switch --flake .#{{target_host}}
 
 ## colmena
-# cbuild:
-#   colmena build
+cbuild:
+  colmena build
 
-# capply:
-#   colmena apply
+capply:
+  colmena apply
+
+cbuild-on target_host *args:
+  colmena build --on {{target_host}} {{args}}
+
+capply target_host *args:
+  colmena apply --on {{target_host}} {{args}}
 
 # 更新flake 輸入來源到最新
 update:
