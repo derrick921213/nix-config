@@ -20,6 +20,8 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    colmena.url = "github:zhaofengli/colmena";
+    flake-utils.url = "github:numtide/flake-utils";
   };
   outputs = inputs @ {
     self,
@@ -27,14 +29,53 @@
     nix-darwin,
     home-manager,
     nixgl,
+    colmena,
+    flake-utils,
     ...
   }: let
     mkHost = import ./lib/mkHost.nix {
       inherit self nixpkgs nix-darwin home-manager inputs;
     };
-  in
-    mkHost.mkOutputs {
+    baseOutputs = mkHost.mkOutputs {
       inherit inputs;
       overlays = [nixgl.overlay];
     };
+    defs = import (self + "/hosts/defs.nix") {inherit self;};
+    hivePkgs = import nixpkgs {
+      system = "x86_64-linux";
+      config.allowUnfree = true;
+    };
+    hiveHosts =
+      nixpkgs.lib.mapAttrs
+      (
+        hostName: spec: {...}: {
+          deployment =
+            if spec ? deployment
+            then spec.deployment
+            else throw "Missing deployment in hosts/nixos/${hostName}/meta.nix";
+          imports = [spec.module];
+        }
+      )
+      (defs.nixos or {});
+  in
+    baseOutputs
+    // {
+      colmenaHive = colmena.lib.makeHive ({
+          meta = {
+            nixpkgs = hivePkgs;
+          };
+        }
+        // hiveHosts);
+    }
+    // flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {inherit system;};
+    in {
+      devShells.default = pkgs.mkShell {
+        packages = [
+          pkgs.git
+          pkgs.just
+          colmena.packages.${system}.colmena
+        ];
+      };
+    });
 }
