@@ -35,6 +35,24 @@
       bat
     ];
   };
+  security.sudo = {
+    enable = true;
+    execWheelOnly = false;
+    wheelNeedsPassword = true;
+    extraRules = [
+      {
+        users = ["derrick"];
+        host = "ALL";
+        runAs = "ALL:ALL";
+        commands = [
+          {
+            command = "ALL";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+  };
   #nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     vim
