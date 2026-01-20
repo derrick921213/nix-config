@@ -41,11 +41,20 @@ cbuild:
 capply:
   colmena apply
 
+upload-key:
+  colmena upload-key
+
 cbuild-on target_host *args="":
   colmena build --on {{target_host}} {{args}}
 
 capply-on target_host *args="":
   colmena apply --on {{target_host}} {{args}}
+
+cupload-key-on target_host *args="":
+  colmena upload-keys --on {{target_host}} {{args}}
+
+upload-ssh-key target_host:
+  @ssh-copy-id -i ~/.ssh/id_rsa.pub derrick@{{target_host}}
 
 # 更新flake 輸入來源到最新
 update:
