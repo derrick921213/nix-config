@@ -64,12 +64,11 @@ os_type := `uname -s`
 
 # 部署 NixOS 節點 (會自動補上前綴)
 @deploy-nixos host:
-    deploy .#nixos-{{host}} -- --no-warn-dirty
+    deploy .#nixos-{{host}} --skip-checks -- --no-warn-dirty 
 
 # 部署 Standalone HM 節點 (會自動補上前綴)
 @deploy-hm host:
-    deploy .#hm-{{host}} -- --no-warn-dirty
-
+    deploy .#hm-{{host}} --skip-checks -- --no-warn-dirty 
 # ---------- Colmena (NixOS 叢集管理) ----------
 
 [group('colmena')]

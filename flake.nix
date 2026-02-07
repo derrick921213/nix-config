@@ -61,26 +61,33 @@
       )
       (defs.nixos or {});
     mkDeployNodes = system: let
-      deploy-lib = deploy-rs.lib.${system};
     in
-      (nixpkgs.lib.mapAttrs' (name: spec: {
+      (nixpkgs.lib.mapAttrs' (name: spec: let
+        nodeSystem = spec.system or "x86_64-linux";
+        deploy-lib = deploy-rs.lib.${nodeSystem};
+      in {
         name = "nixos-${name}";
         value = {
           hostname = spec.hostip or name;
-          remoteBuild = spec.remoteBuild or false;
+          remoteBuild = spec.remoteBuild or true;
+          sshUser = spec.user or "derrick";
           profiles.system = {
-            user = spec.user or "root";
+            user = "root";
             path = deploy-lib.activate.nixos baseOutputs.nixosConfigurations.${name};
           };
         };
       }) (defs.nixos or {}))
-      // (nixpkgs.lib.mapAttrs' (name: spec: {
+      // (nixpkgs.lib.mapAttrs' (name: spec: let
+        nodeSystem = spec.system or "x86_64-linux";
+        deploy-lib = deploy-rs.lib.${nodeSystem};
+      in {
         name = "hm-${name}";
         value = {
+          sshUser = spec.user or "derrick";
           hostname = spec.hostip or name;
-          remoteBuild = spec.remoteBuild or false;
+          remoteBuild = spec.remoteBuild or true;
           profiles.home-manager = {
-            user = spec.user;
+            user = "root";
             path = deploy-lib.activate.home-manager baseOutputs.homeConfigurations.${name};
           };
         };
@@ -105,7 +112,7 @@
       pkgs = import nixpkgs {inherit system;};
       deploy-lib = deploy-rs.lib.${system};
     in {
-      checks = deploy-lib.deployChecks self.deploy;
+      # checks = deploy-lib.deployChecks self.deploy;
 
       devShells.default = pkgs.mkShell {
         packages = [

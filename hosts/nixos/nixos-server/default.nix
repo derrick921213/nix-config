@@ -55,6 +55,11 @@
     ];
   };
   #nixpkgs.config.allowUnfree = true;
+  nix.settings.trusted-users = [
+    "root"
+    "derrick"
+    "@wheel"
+  ];
   environment.systemPackages = with pkgs; [
     vim
     wget
