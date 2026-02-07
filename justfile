@@ -20,24 +20,24 @@ switch target_host=hostname: (build target_host)
   sudo ./result/sw/bin/darwin-rebuild switch --flake ".#{{target_host}}"
 
 ### linux
-# Build the NixOS configuration without switching to it
+# 編譯NixOS config 不切換
 [linux]
 build target_host=hostname flags="":
 	nixos-rebuild build --flake .#{{target_host}} {{flags}}
 
-# Build the NixOS config with the --show-trace flag set
+# 編譯NixOS config 並加上 --show-trace 旗標
 [linux]
 trace target_host=hostname: (build target_host "--show-trace")
 
-# Build the NixOS configuration and switch to it.
+# 編譯NixOS config 並切換
 [linux]
 switch target_host=hostname:
   sudo nixos-rebuild switch --flake .#{{target_host}}
 
 ## colmena
 ceval:
-  colmena eval
-  
+  colmena eval flake.nix --impure
+
 cbuild:
   colmena build
 

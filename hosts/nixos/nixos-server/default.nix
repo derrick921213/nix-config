@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  hostname,
   ...
 }: {
   imports = [
@@ -8,7 +9,7 @@
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  networking.hostName = "nixos-server";
+  networking.hostName = hostname;
   networking.networkmanager.enable = true;
   services.resolved.enable = true;
   time.timeZone = "Asia/Taipei";

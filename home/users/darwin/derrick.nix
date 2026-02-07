@@ -1,11 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{...}: let
 in {
-  home.stateVersion = "25.11";
-  imports = [./programs];
+  imports = [./core.nix];
+  home.username = "derrick";
+  home.homeDirectory = "/Users/derrick";
   home.activation.fixNixProfile = lib.hm.dag.entryAfter ["writeBoundary"] ''
     target="/etc/profiles/per-user/${config.home.username}"
     link="$HOME/.nix-profile"

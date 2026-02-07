@@ -41,10 +41,6 @@
       overlays = [nixgl.overlay];
     };
     defs = import (self + "/hosts/defs.nix") {inherit self;};
-    currentPkgs = import nixpkgs {
-      system = builtins.currentSystem;
-      config.allowUnfree = true;
-    };
     hiveHosts =
       nixpkgs.lib.mapAttrs
       (
@@ -65,9 +61,12 @@
   in
     baseOutputs
     // {
-      colmena = colmena.lib.makeHive ({
+      colmenaHive = colmena.lib.makeHive ({
           meta = {
-            nixpkgs = currentPkgs;
+            nixpkgs = import nixpkgs {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
           };
         }
         // hiveHosts);

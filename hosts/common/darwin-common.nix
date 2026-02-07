@@ -8,44 +8,20 @@
   ...
 }: {
   imports = [
+    ./core.nix
     inputs.nix-homebrew.darwinModules.nix-homebrew
     inputs.home-manager.darwinModules.home-manager
   ];
-  networking.hostName = hostname;
-  users.users.${user} = {
-    home = "/Users/${user}";
-    shell = pkgs.zsh;
-  };
 
   system = {
     stateVersion = 6;
     primaryUser = user;
   };
 
-  nix = {
-    enable = true;
-    settings = {
-      experimental-features = ["nix-command" "flakes"];
-      trusted-users = ["root" "@admin"];
-    };
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 7d";
-      interval = {
-        Weekday = 0;
-        Hour = 3;
-        Minute = 0;
-      };
-    };
-    channel.enable = false;
-  };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = {inherit inputs self;};
-    backupFileExtension = "backup";
-    users.${user} = {imports = [(import (self + "/home/users/darwin/${user}/default.nix"))];};
+  nix.gc.interval = {
+    Weekday = 0;
+    Hour = 3;
+    Minute = 0;
   };
 
   nix-homebrew = {
@@ -74,34 +50,8 @@
     masApps = {};
   };
 
-  programs = {
-    zsh.enable = true;
-    nix-index.enable = true;
-  };
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.hack
-  ];
-
   environment.systemPackages = with pkgs; [
     iterm2
-    just
-    git
-    curl
-    wget
-    vim
-    neovim
-    htop
-    tmux
-    tree
-    ripgrep
-    fd
-    jq
-    alejandra
-    neofetch
-    mkcert
   ];
 
   security.pam.services.sudo_local.touchIdAuth = true;

@@ -48,11 +48,14 @@ sudo fs_usage -w | grep plist
   # 這是 Rust 管理系統控制主機功能的「開關」
   # 例如：extraModules = [ ../../shared/modules/docker.nix ];
   extraModules = [ ];
-
-  # --- 自定義變數 (Custom Variables / Tags) ---
-  
   # 這裡可以放任何你想傳遞給 default.nix 或其他模組的自定義資料
   # 例如：標記這台機器是 "production" 還是 "staging"
   # tags = [ "web-server" "database" ];
+
+  # 防火牆預設定義好的Service name
+  firewall-tags = ["ssh"]
+
+  # --- 自定義變數 (Custom Variables) ---
+  
 }
 ```
