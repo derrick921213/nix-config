@@ -1,89 +1,88 @@
-# just 沒有參數預設建置系統config並switch
-default: switch
+default:
+    nix flake show
+
+# 自動取得主機名稱與系統類型
 hostname := `hostname | cut -d "." -f 1`
+os_type := `uname -s`
 
-### macos
-# 只編譯nix-darwin config 不切換
-[macos]
-build target_host=hostname flags="":
-  @echo "Building nix-darwin config..."
-  nix --extra-experimental-features 'nix-command flakes'  build ".#darwinConfigurations.{{target_host}}.system" {{flags}}
+# ---------- 基礎維護 ----------
 
-# 編譯nix-darwin config 並加上 --show-trace 旗標
-[macos]
-trace target_host=hostname: (build target_host "--show-trace")
-
-# 編譯nix-darwin config 並切換
-[macos]
-switch target_host=hostname: (build target_host)
-  @echo "switching to new config for {{target_host}}"
-  sudo ./result/sw/bin/darwin-rebuild switch --flake ".#{{target_host}}"
-
-### linux
-# 編譯NixOS config 不切換
-[linux]
-build target_host=hostname flags="":
-	nixos-rebuild build --flake .#{{target_host}} {{flags}}
-
-# 編譯NixOS config 並加上 --show-trace 旗標
-[linux]
-trace target_host=hostname: (build target_host "--show-trace")
-
-# 編譯NixOS config 並切換
-[linux]
-switch target_host=hostname:
-  sudo nixos-rebuild switch --flake .#{{target_host}}
-
-## colmena
-ceval:
-  colmena eval flake.nix --impure
-
-cbuild:
-  colmena build
-
-capply:
-  colmena apply
-
-upload-key:
-  colmena upload-key
-
-cbuild-on target_host *args="":
-  colmena build --on {{target_host}} {{args}}
-
-capply-on target_host *args="":
-  colmena apply --on {{target_host}} {{args}}
-
-cupload-key-on target_host *args="":
-  colmena upload-keys --on {{target_host}} {{args}}
-
-upload-ssh-key target_host:
-  @ssh-copy-id -i ~/.ssh/id_rsa.pub derrick@{{target_host}}
-
-# 更新flake 輸入來源到最新
+# 更新所有 Flake inputs
 update:
-  @nix flake update
+    nix flake update
 
-show-hosts:
-  @nix eval .#hosts --json | jq
+# 檢查語法錯誤
+check:
+    nix flake check --show-trace
 
-## remote nix vm installation
-# install IP:
-#   ssh -o "StrictHostKeyChecking no" nixos@{{IP}} "sudo bash -c '\
-#     nix-shell -p git --run \"cd /root/ && \
-#     if [ -d \"nix-config\" ]; then \
-#         rm -rf nix-config; \
-#     fi && \
-#     git clone https://github.com/ironicbadger/nix-config.git && \
-#     cd nix-config/lib/install && \
-#     sh install-nix.sh\"'"
+# 列出所有主機定義 (需安裝 jq)
+@show-hosts:
+    nix eval .#hosts --json | jq
 
-# 移除舊的OS世代及沒有使用的packages
+# 清理舊世代與垃圾
 gc:
-  @nix-collect-garbage -d
-  @nix-collect-garbage --delete-older-than 7d
-  @nix-store --gc
+    @echo "Cleaning up old generations..."
+    sudo nix-collect-garbage -d
+    nix-collect-garbage --delete-older-than 7d
+    nix-store --gc
 
-## manual command for initial bootstrapping
-## sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
-## nix --extra-experimental-features 'nix-command flakes' run nixpkgs#just
+# ---------- 本地系統切換 (NixOS / Darwin) ----------
 
+# 自動判斷系統並執行 switch
+switch:
+    @if [ "{{os_type}}" = "Darwin" ]; then \
+        just switch-macos {{hostname}}; \
+    else \
+        just switch-nixos {{hostname}}; \
+    fi
+
+# macOS: 編譯並切換
+switch-macos host=hostname:
+    @echo "Switching nix-darwin config for {{host}}..."
+    nix build ".#darwinConfigurations.{{host}}.system"
+    sudo ./result/sw/bin/darwin-rebuild switch --flake ".#{{host}}"
+
+# NixOS: 編譯並切換
+switch-nixos host=hostname:
+    @echo "Switching NixOS config for {{host}}..."
+    sudo nixos-rebuild switch --flake .#{{host}}
+
+# ---------- Home Manager (CLI Tools) ----------
+
+# 本地 HM 建置測試
+build-hm host=hostname:
+    home-manager build --flake .#{{host}}
+
+# 本地 HM 切換
+switch-hm host=hostname:
+    home-manager switch --flake .#{{host}}
+
+# ---------- 遠端部署 (Deploy-RS) ----------
+
+# 部署 NixOS 節點 (會自動補上前綴)
+deploy-nixos host:
+    deploy .#nixos-{{host}}
+
+# 部署 Standalone HM 節點 (會自動補上前綴)
+deploy-hm host:
+    deploy .#hm-{{host}}
+
+# ---------- Colmena (NixOS 叢集管理) ----------
+
+[group('colmena')]
+cbuild:
+    colmena build
+
+[group('colmena')]
+capply:
+    colmena apply
+
+[group('colmena')]
+capply-on host *args="":
+    colmena apply --on {{host}} {{args}}
+
+# ---------- 補助工具 ----------
+
+# 傳送 SSH Key 到遠端
+upload-ssh-key user host:
+    @ssh-copy-id -i ~/.ssh/id_rsa.pub {{user}}@{{host}}

@@ -3,6 +3,7 @@
   inputs,
   self,
   user,
+  hostname,
   ...
 }: {
   nix = {

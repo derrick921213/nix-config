@@ -22,6 +22,7 @@
     };
     colmena.url = "github:zhaofengli/colmena";
     flake-utils.url = "github:numtide/flake-utils";
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
   outputs = inputs @ {
     self,
@@ -31,6 +32,7 @@
     nixgl,
     colmena,
     flake-utils,
+    deploy-rs,
     ...
   }: let
     mkHost = import ./lib/mkHost.nix {
@@ -58,6 +60,29 @@
         }
       )
       (defs.nixos or {});
+    mkDeployNodes = system: let
+      deploy-lib = deploy-rs.lib.${system};
+    in
+      (nixpkgs.lib.mapAttrs' (name: spec: {
+        name = "nixos-${name}";
+        value = {
+          hostname = spec.hostip or name;
+          profiles.system = {
+            user = spec.user or "root";
+            path = deploy-lib.activate.nixos baseOutputs.nixosConfigurations.${name};
+          };
+        };
+      }) (defs.nixos or {}))
+      // (nixpkgs.lib.mapAttrs' (name: spec: {
+        name = "hm-${name}";
+        value = {
+          hostname = spec.hostip or name;
+          profiles.home-manager = {
+            user = spec.user;
+            path = deploy-lib.activate.home-manager baseOutputs.homeConfigurations.${name};
+          };
+        };
+      }) (defs.hm or {}));
   in
     baseOutputs
     // {
@@ -71,6 +96,10 @@
         }
         // hiveHosts);
     }
+    // {
+      deploy.nodes = mkDeployNodes "aarch64-darwin";
+      checks = builtins.mapAttrs (system: deploy-lib: deploy-lib.deployChecks self.deploy) deploy-rs.lib;
+    }
     // flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {inherit system;};
     in {
@@ -79,6 +108,8 @@
           pkgs.git
           pkgs.just
           colmena.packages.${system}.colmena
+          deploy-rs.packages.${system}.deploy-rs
+          home-manager.packages.${system}.home-manager
         ];
       };
     });
