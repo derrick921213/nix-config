@@ -35,6 +35,9 @@ switch target_host=hostname:
   sudo nixos-rebuild switch --flake .#{{target_host}}
 
 ## colmena
+ceval:
+  colmena eval
+  
 cbuild:
   colmena build
 

@@ -36,20 +36,26 @@
     user,
     hostModule,
     pkgs,
+    stateVersion ? "25.11",
+    extraModules ? [],
+    hostMeta ? {},
     specialArgs ? {},
   }:
     nixpkgs.lib.nixosSystem {
       inherit system pkgs;
-      specialArgs = specialArgs // {inherit self user;};
-      modules = [
-        hostModule
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {inherit inputs self user;};
-        }
-      ];
+      specialArgs = specialArgs // {inherit self user hostMeta;};
+      modules =
+        [
+          hostModule
+          {system.stateVersion = stateVersion;}
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {inherit inputs self user;};
+          }
+        ]
+        ++ extraModules;
     };
 
   mkHome = {
@@ -94,6 +100,9 @@
         system = spec.system;
         user = spec.user;
         hostModule = spec.module;
+        stateVersion = spec.stateVersion or "25.11";
+        extraModules = spec.extraModules or [];
+        hostMeta = spec;
         pkgs = mkPkgs spec.system;
         specialArgs = {
           inherit inputs;

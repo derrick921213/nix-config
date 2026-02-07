@@ -41,28 +41,33 @@
       overlays = [nixgl.overlay];
     };
     defs = import (self + "/hosts/defs.nix") {inherit self;};
-    hivePkgs = import nixpkgs {
-      system = "x86_64-linux";
+    currentPkgs = import nixpkgs {
+      system = builtins.currentSystem;
       config.allowUnfree = true;
     };
     hiveHosts =
       nixpkgs.lib.mapAttrs
       (
-        hostName: spec: {...}: {
+        hostName: spec: {
+          name,
+          nodes,
+          ...
+        }: {
           deployment =
             if spec ? deployment
             then spec.deployment
             else throw "Missing deployment in hosts/nixos/${hostName}/meta.nix";
-          imports = [spec.module];
+          imports = baseOutputs.nixosConfigurations.${hostName}._module.args.modules 
+                  or [(baseOutputs.nixosConfigurations.${hostName}.extendModules {})];
         }
       )
       (defs.nixos or {});
   in
     baseOutputs
     // {
-      colmenaHive = colmena.lib.makeHive ({
+      colmena = colmena.lib.makeHive ({
           meta = {
-            nixpkgs = hivePkgs;
+            nixpkgs = currentPkgs;
           };
         }
         // hiveHosts);
