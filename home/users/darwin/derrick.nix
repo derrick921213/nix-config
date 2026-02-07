@@ -1,6 +1,6 @@
 {...}: let
 in {
-  imports = [./core.nix];
+  imports = [../core.nix];
   home.username = "derrick";
   home.homeDirectory = "/Users/derrick";
   home.activation.fixNixProfile = lib.hm.dag.entryAfter ["writeBoundary"] ''

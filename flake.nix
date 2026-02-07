@@ -98,11 +98,13 @@
     }
     // {
       deploy.nodes = mkDeployNodes "aarch64-darwin";
-      checks = builtins.mapAttrs (system: deploy-lib: deploy-lib.deployChecks self.deploy) deploy-rs.lib;
     }
     // flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {inherit system;};
+      deploy-lib = deploy-rs.lib.${system};
     in {
+      checks = deploy-lib.deployChecks self.deploy;
+
       devShells.default = pkgs.mkShell {
         packages = [
           pkgs.git

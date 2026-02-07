@@ -1,8 +1,9 @@
 {...}: {
   system = "aarch64-linux";
   user = "derrick";
+  hostip = "172.16.125.139";
   deployment = {
-    targetHost = "172.16.125.137";
+    targetHost = "172.16.125.139";
     targetUser = "derrick";
     targetPort = 22;
     buildOnTarget = true;
