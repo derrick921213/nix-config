@@ -67,6 +67,7 @@
         name = "nixos-${name}";
         value = {
           hostname = spec.hostip or name;
+          remoteBuild = spec.remoteBuild or false;
           profiles.system = {
             user = spec.user or "root";
             path = deploy-lib.activate.nixos baseOutputs.nixosConfigurations.${name};
@@ -77,6 +78,7 @@
         name = "hm-${name}";
         value = {
           hostname = spec.hostip or name;
+          remoteBuild = spec.remoteBuild or false;
           profiles.home-manager = {
             user = spec.user;
             path = deploy-lib.activate.home-manager baseOutputs.homeConfigurations.${name};
