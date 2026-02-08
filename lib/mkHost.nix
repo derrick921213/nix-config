@@ -48,6 +48,7 @@
         [
           hostModule
           {system.stateVersion = stateVersion;}
+          (import (self + "/hosts/common/nixos-common.nix"))
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
