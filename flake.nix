@@ -80,7 +80,10 @@
         value = {
           hostname = spec.hostip or name;
           remoteBuild = spec.remoteBuild or true;
+          # magicRollback = false;
+          confirmTimeout = 120;
           sshUser = spec.user or "derrick";
+          sudo = "/run/wrappers/bin/sudo -u";
           profiles.system = {
             user = "root";
             path = deploy-lib.activate.nixos baseOutputs.nixosConfigurations.${name};
@@ -93,11 +96,13 @@
       in {
         name = "hm-${name}";
         value = {
+          sudo = "/run/wrappers/bin/sudo -u";
+          confirmTimeout = 120;
           sshUser = spec.user or "derrick";
           hostname = spec.hostip or name;
           remoteBuild = spec.remoteBuild or true;
           profiles.home-manager = {
-            user = "root";
+            user = spec.user or "derrick";
             path = deploy-lib.activate.home-manager baseOutputs.homeConfigurations.${name};
           };
         };
