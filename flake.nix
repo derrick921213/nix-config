@@ -2,11 +2,17 @@
   description = "Derrick Nix Config";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    home-manager = {
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
+    home-manager-unstable = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -27,8 +33,10 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-stable,
     nix-darwin,
-    home-manager,
+    home-manager-stable,
+    home-manager-unstable,
     nixgl,
     colmena,
     flake-utils,
@@ -36,7 +44,9 @@
     ...
   }: let
     mkHost = import ./lib/mkHost.nix {
-      inherit self nixpkgs nix-darwin home-manager inputs;
+      inherit self nixpkgs nixpkgs-stable nix-darwin inputs;
+      home-manager-stable = inputs.home-manager-stable;
+      home-manager-unstable = inputs.home-manager-unstable;
     };
     baseOutputs = mkHost.mkOutputs {
       inherit inputs;
@@ -97,7 +107,7 @@
     // {
       colmenaHive = colmena.lib.makeHive ({
           meta = {
-            nixpkgs = import nixpkgs {
+            nixpkgs = import nixpkgs-stable {
               system = "x86_64-linux";
               config.allowUnfree = true;
             };
@@ -120,7 +130,7 @@
           pkgs.just
           colmena.packages.${system}.colmena
           deploy-rs.packages.${system}.deploy-rs
-          home-manager.packages.${system}.home-manager
+          home-manager-unstable.packages.${system}.home-manager
         ];
       };
     });

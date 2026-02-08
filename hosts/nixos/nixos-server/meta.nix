@@ -5,6 +5,7 @@
   remoteBuild = true;
   extraModules = [(import (self + "/hosts/common/firewall.nix"))];
   firewall-tags = ["ssh" "web"];
+  pkgsChannel = "stable";
   deployment = {
     targetHost = "172.16.125.139";
     targetUser = "derrick";

@@ -1,16 +1,19 @@
 {
   self,
   nixpkgs,
+  nixpkgs-stable,
   nix-darwin,
-  home-manager,
+  home-manager-stable,
+  home-manager-unstable,
   inputs,
 }: let
   mkPkgsFor = {
     system,
+    nixpkgsSrc ? nixpkgs,
     overlays ? [],
     allowUnfree ? true,
   }:
-    import nixpkgs {
+    import nixpkgsSrc {
       inherit system overlays;
       config.allowUnfree = allowUnfree;
     };
@@ -36,25 +39,28 @@
     user,
     hostModule,
     pkgs,
+    nixpkgsSrc,
     stateVersion ? "25.11",
+    homeManagerModule,
     extraModules ? [],
     hostMeta ? {},
     specialArgs ? {},
   }:
-    nixpkgs.lib.nixosSystem {
+    nixpkgsSrc.lib.nixosSystem {
       inherit system pkgs;
       specialArgs = specialArgs // {inherit self user hostMeta;};
       modules =
         [
           hostModule
+          homeManagerModule
           {system.stateVersion = stateVersion;}
           (import (self + "/hosts/common/nixos-common.nix"))
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {inherit inputs self user;};
-          }
+          home-manager-stable.nixosModules.home-manager
+          # {
+          #   home-manager.useGlobalPkgs = true;
+          #   home-manager.useUserPackages = true;
+          #   home-manager.extraSpecialArgs = {inherit inputs self user;};
+          # }
         ]
         ++ extraModules;
     };
@@ -66,7 +72,7 @@
     pkgs,
     extraSpecialArgs ? {},
   }:
-    home-manager.lib.homeManagerConfiguration {
+    home-manager-unstable.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [homeModule];
       extraSpecialArgs = extraSpecialArgs // {inherit self user;};
@@ -79,7 +85,18 @@
   }: let
     defs = import (self + "/hosts/defs.nix") {inherit self;};
 
-    mkPkgs = system: mkPkgsFor {inherit system overlays allowUnfree;};
+    # mkPkgs = system: mkPkgsFor {inherit system overlays allowUnfree;};
+    mkPkgsUnstable = system:
+      mkPkgsFor {
+        inherit system overlays allowUnfree;
+        nixpkgsSrc = nixpkgs;
+      };
+
+    mkPkgsStable = system:
+      mkPkgsFor {
+        inherit system overlays allowUnfree;
+        nixpkgsSrc = nixpkgs-stable;
+      };
 
     mkDarwinSet = nixpkgs.lib.mapAttrs' (name: spec: {
       name = name;
@@ -87,7 +104,7 @@
         system = spec.system;
         user = spec.user;
         hostModule = spec.module;
-        pkgs = mkPkgs spec.system;
+        pkgs = mkPkgsUnstable spec.system;
         specialArgs = {
           inherit inputs;
           hostname = name;
@@ -97,19 +114,38 @@
 
     mkNixosSet = nixpkgs.lib.mapAttrs' (name: spec: {
       name = name;
-      value = mkNixosHost {
-        system = spec.system;
-        user = spec.user;
-        hostModule = spec.module;
-        stateVersion = spec.stateVersion or "25.11";
-        extraModules = spec.extraModules or [];
-        hostMeta = spec;
-        pkgs = mkPkgs spec.system;
-        specialArgs = {
-          inherit inputs;
-          hostname = name;
+      value = let
+        channel = spec.pkgsChannel or "stable";
+        pkgs' =
+          if channel == "unstable"
+          then mkPkgsUnstable spec.system
+          else mkPkgsStable spec.system;
+
+        homeManagerModule' =
+          if channel == "unstable"
+          then home-manager-unstable.nixosModules.home-manager
+          else home-manager-stable.nixosModules.home-manager;
+
+        nixpkgsSrc' =
+          if channel == "unstable"
+          then nixpkgs
+          else nixpkgs-stable;
+      in
+        mkNixosHost {
+          system = spec.system;
+          user = spec.user;
+          hostModule = spec.module;
+          stateVersion = spec.stateVersion or "25.11";
+          extraModules = spec.extraModules or [];
+          hostMeta = spec;
+          pkgs = pkgs';
+          nixpkgsSrc = nixpkgsSrc';
+          homeManagerModule = homeManagerModule';
+          specialArgs = {
+            inherit inputs;
+            hostname = name;
+          };
         };
-      };
     }) (defs.nixos or {});
 
     mkHomeSet = nixpkgs.lib.mapAttrs' (name: spec: {
@@ -118,7 +154,7 @@
         system = spec.system;
         user = spec.user;
         homeModule = spec.module;
-        pkgs = mkPkgs spec.system;
+        pkgs = mkPkgsUnstable spec.system;
         extraSpecialArgs = {
           inherit inputs;
           hostname = name;

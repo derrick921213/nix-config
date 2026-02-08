@@ -16,7 +16,7 @@
       automatic = true;
       options = "--delete-older-than 7d";
     };
-    channel.enable = false;
+    channel.enable = true;
   };
 
   networking.hostName = hostname;
@@ -65,7 +65,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {
-      inherit inputs self;
+      inherit inputs self user;
       isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
     };
     backupFileExtension = "backup";
