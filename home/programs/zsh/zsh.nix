@@ -31,9 +31,13 @@
     };
 
     envExtra = ''
-      export PATH="/etc/profiles/per-user/${config.home.username}/bin:/run/current-system/sw/bin:$PATH"
+      if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      elif [ -e /etc/profile.d/nix.sh ]; then
+        . /etc/profile.d/nix.sh
+      fi
       export EDITOR=nvim
-      export RUST_BACKTRACE=1
+      #export RUST_BACKTRACE=1
     '';
 
     initContent = ''

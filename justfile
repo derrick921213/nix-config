@@ -53,11 +53,11 @@ os_type := `uname -s`
 # ---------- Home Manager (CLI Tools) ----------
 
 # 本地 HM 建置測試
-@hm-build host=hostname:
+@build-hm host=hostname:
     home-manager build --flake .#{{host}}
 
 # 本地 HM 切換
-@hm-switch host=hostname:
+@switch-hm host=hostname:
     home-manager switch --flake .#{{host}}
 
 # ---------- 遠端部署 (Deploy-RS) ----------
