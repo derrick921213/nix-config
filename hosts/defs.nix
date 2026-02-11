@@ -1,4 +1,8 @@
-{self}: let
+{
+  self,
+  inputs,
+  ...
+}: let
   discoverHosts = category: let
     base = self + "/hosts/${category}";
     entries =
@@ -11,7 +15,7 @@
       metaPath = base + "/${name}/meta.nix";
       meta =
         if builtins.pathExists metaPath
-        then import metaPath {inherit self;}
+        then import metaPath {inherit self inputs;}
         else throw "Missing ${category} host meta: ${toString metaPath}";
 
       modulePath = base + "/${name}/default.nix";

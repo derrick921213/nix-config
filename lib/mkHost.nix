@@ -6,6 +6,7 @@
   home-manager-stable,
   home-manager-unstable,
   inputs,
+  ...
 }: let
   mkPkgsFor = {
     system,
@@ -55,7 +56,7 @@
           homeManagerModule
           {system.stateVersion = stateVersion;}
           (import (self + "/hosts/common/nixos-common.nix"))
-          home-manager-stable.nixosModules.home-manager
+          #home-manager-stable.nixosModules.home-manager
           # {
           #   home-manager.useGlobalPkgs = true;
           #   home-manager.useUserPackages = true;
@@ -83,7 +84,7 @@
     overlays ? [],
     allowUnfree ? true,
   }: let
-    defs = import (self + "/hosts/defs.nix") {inherit self;};
+    defs = import (self + "/hosts/defs.nix") {inherit self inputs;};
 
     # mkPkgs = system: mkPkgsFor {inherit system overlays allowUnfree;};
     mkPkgsUnstable = system:

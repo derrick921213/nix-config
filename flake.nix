@@ -22,6 +22,10 @@
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
@@ -52,7 +56,7 @@
       inherit inputs;
       overlays = [nixgl.overlay];
     };
-    defs = import (self + "/hosts/defs.nix") {inherit self;};
+    defs = import (self + "/hosts/defs.nix") {inherit self inputs;};
     hiveHosts =
       nixpkgs.lib.mapAttrs
       (
