@@ -12,6 +12,9 @@
       experimental-features = ["nix-command" "flakes"];
       trusted-users = ["root" "@admin" "derrick"];
     };
+    substituters = [
+      "https://cache.nixos.org"
+    ];
     gc = {
       automatic = true;
       options = "--delete-older-than 7d";
