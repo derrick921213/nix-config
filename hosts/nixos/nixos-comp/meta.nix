@@ -9,7 +9,7 @@
   remoteBuild = true;
   diskDevice = "/dev/nvme0n1";
   extraModules = [
-    (self + "/hosts/common/firewall.nix")
+    (self + "/modules/firewall.nix")
     inputs.disko.nixosModules.disko
     ./disko.nix
   ];
