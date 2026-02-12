@@ -6,11 +6,16 @@
 }: {
   services.greetd = {
     enable = true;
-    settings = {
-      default_session = {
-        user = "greeter";
-        command = "${pkgs.tuigreet}/bin/tuigreet --asterisks --time --cmd Hyprland";
-      };
+    settings.default_session = {
+      user = "greeter";
+      command = ''
+        ${pkgs.tuigreet}/bin/tuigreet \
+          --time \
+          --asterisks \
+          --remember \
+          --remember-session \
+          --cmd qtile start
+      '';
     };
   };
 

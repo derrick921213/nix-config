@@ -4,9 +4,15 @@
   lib,
   ...
 }: {
-  services.xserver.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
-  #   services.xserver.displayManager.startx.enable = true;
+  services.xserver = {
+    enable = true;
+    autoRepeatDelay = 200;
+    autoRepeatInterval = 35;
+    videoDrivers = ["modesetting"];
+    windowManager.qtile.enable = true;
+    displayManager.startx.enable = true;
+  };
+  #   services.displayManager.ly.enable = true;
   environment.systemPackages = with pkgs; [
     kitty
     rofi
