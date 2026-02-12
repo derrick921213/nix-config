@@ -92,5 +92,6 @@
       PermitRootLogin = "no";
     };
   };
+  programs.nix-ld.dev.enable = true;
   system.stateVersion = "25.11";
 }

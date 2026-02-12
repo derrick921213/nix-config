@@ -26,6 +26,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+    nix-ld = {
+      url = "github:Mic92/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
