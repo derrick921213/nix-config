@@ -13,6 +13,7 @@
     (self + "/modules/desktop/greetd.nix")
     (self + "/modules/desktop/hyprland.nix")
     (self + "/modules/desktop/qtile.nix")
+    ../dolplhin.nix
     inputs.disko.nixosModules.disko
     inputs.nix-ld.nixosModules.nix-ld
     ./disko.nix

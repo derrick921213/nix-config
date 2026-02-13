@@ -50,9 +50,6 @@
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq3fqTChvwq6LS6MgIhUHtIAeTIt8NYtWLWeFM4fv0uqHBR8RGBpQICxUmhfuW4cIX3DfCTSlrmgStjQKJUGfR9LHHAJZfRc7eKlWDmj4h6Pfez+cv+dZp7i6FW4PbbKa5u0DnZqoUcjqsPBAW/xnNrKuFso2GBQDVL/ynvvwp/8o+wHUR5f4n6Gshy2uFTx35gtEXLMd/BA+I7scKch11R2QwYwWoTicl2ZIVYrS3H8fCmL/ecNaYuxAv/ilD4JPbthM3zxhid6CV/yR5cDG0slit69NX3EmHBmvmoPzRF0b6OICOfn7aqEqAk/mMkxrpRMpqC53QwRATRwWzDuzqd7NiLV9hVZ+uAuT6Dp/1BzgX8iEVN7rGsMKa5mdq+mlSdJ6dNeXKbgpTw931yz5aYp6pn1sBaWhP0dqqe34xddsmeJ5MBYSGkgyfz0+0gwErZ0UgryZ/i8zFKJfj4qf2EHzTyBfYGSPQ8JphCYL74n96ElpcFrEDVJK5FFOJUQ8= derrick@derrickdeMacBook-Pro.local"
     ];
-    packages = with pkgs; [
-      bat
-    ];
   };
 
   security.sudo = {
