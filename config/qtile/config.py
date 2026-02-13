@@ -5,15 +5,16 @@ from libqtile.utils import guess_terminal
 import os
 import subprocess
 
-@hook.subscribe.startup_once
-def autostart():
-    subprocess.Popen(['vmware-user-suid-wrapper'])
-
-
 mod = "mod4"
+alt = "mod1"
+home = os.path.expanduser("~")
 terminal = guess_terminal()
 
 myTerm = "alacritty" 
+
+@hook.subscribe.startup_once
+def autostart():
+    subprocess.run([home + "/.config/qtile/scripts/autostart.sh"])
 
 keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -58,12 +59,15 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "d", lazy.spawn("rofi -show drun -show-icons"), desc='Run Launcher'),
+    Key([alt], "Tab", lazy.spawn("rofi -show window -show-icons"), desc='Run Lanucher to switch window'),
     Key(
-        [mod], 
+        [mod,alt], 
         "s",
-        lazy.spawn('sh -c "maim -s | xclip -selection clipboard -t image/png -i"'),
+        lazy.spawn('sh -c "maim -s | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
         desc="Screenshot"
     ),
+    Key([mod], "e", lazy.spawn("dolphin"), desc="File Manager"),
+    Key([mod], "w", lazy.spawn("firefox"), desc="Web Browser"),
 ]
 
 # Add key bindings to switch VTs in Wayland.

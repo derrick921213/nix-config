@@ -26,5 +26,7 @@
     btop
     xev
     xorg.xrandr
+    yad
+    libnotify
   ];
 }
