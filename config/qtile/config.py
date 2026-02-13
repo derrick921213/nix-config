@@ -1,9 +1,13 @@
 from libqtile import bar, extension, hook, layout, qtile, widget
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen,ScratchPad, DropDown
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 import os
 import subprocess
+
+@hook.subscribe.startup_once
+def autostart():
+    subprocess.Popen(['vmware-user-suid-wrapper'])
 
 
 mod = "mod4"
@@ -78,6 +82,7 @@ for vt in range(1, 8):
 
 groups = [Group(i) for i in "123456789"]
 
+
 for i in groups:
     keys.extend(
         [
@@ -101,6 +106,24 @@ for i in groups:
                 desc="move focused window to group {}".format(i.name)),
         ]
     )
+
+groups.append(
+    ScratchPad("scratchpad", [
+        # 定義一個名為 "term" 的下拉式終端機
+        DropDown("term", "alacritty", 
+                 opacity=0.9,          # 透明度
+                 height=0.6,           # 高度佔螢幕 60%
+                 width=0.8,            # 寬度佔螢幕 80%
+                 x=0.1, y=0.1,         # 顯示的位置偏移
+                 on_focus_lost_hide=True # 當焦點離開時自動縮回去
+        ),
+    ]),
+)
+
+keys.extend([
+    # 按下 mod + u 彈出/收起終端機
+    Key([mod], "u", lazy.group['scratchpad'].dropdown_toggle('term')),
+])
 
 colors = [
     ["#1a1b26", "#1a1b26"],  # bg        (primary.background)
@@ -133,10 +156,10 @@ layouts = [
     # layout.Bsp(),
     # layout.Matrix(),
     layout.MonadTall(**layout_theme),
-    # layout.MonadWide(),
+    layout.MonadWide(**layout_theme),
     # layout.RatioTile(),
     # layout.Tile(),
-    # layout.TreeTab(),
+    layout.TreeTab(**layout_theme),
     # layout.VerticalTile(),
     # layout.Zoomy(),
 ]
@@ -241,22 +264,22 @@ screens = [
                     visible_on_warn = False,
                 ),
                 sep,
-                widget.Battery(
-                    foreground=colors[6],           # pick a palette slot you like
-                    padding=8,
-                    update_interval=5,
-                    format='{percent:2.0%} {char} {hour:d}:{min:02d}',  # e.g. "73% ⚡ 1:45"
-                    fmt='Bat: {}',
-                    charge_char='',               # shown while charging
-                    discharge_char='',            # Nerd icon; use '-' if you prefer plain ascii
-                    full_char='✔',                 # when at/near 100%
-                    unknown_char='?',
-                    empty_char='!', 
-                    mouse_callbacks={
-                        'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e upower -i $(upower -e | grep BAT)'),
-                    },
-                ),
-                sep,
+                # widget.Battery(
+                #     foreground=colors[6],           # pick a palette slot you like
+                #     padding=8,
+                #     update_interval=5,
+                #     format='{percent:2.0%} {char} {hour:d}:{min:02d}',  # e.g. "73% ⚡ 1:45"
+                #     fmt='Bat: {}',
+                #     charge_char='',               # shown while charging
+                #     discharge_char='',            # Nerd icon; use '-' if you prefer plain ascii
+                #     full_char='✔',                 # when at/near 100%
+                #     unknown_char='?',
+                #     empty_char='!', 
+                #     mouse_callbacks={
+                #         'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e upower -i $(upower -e | grep BAT)'),
+                #     },
+                # ),
+                # sep,
                 widget.Volume(
                     foreground = colors[7],
                     padding = 8, 
