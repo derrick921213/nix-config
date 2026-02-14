@@ -5,6 +5,7 @@ in {
     ../../profiles/hyprland.nix
     ../../profiles/qtile.nix
     ./programs/rofi.nix
+    ./programs/yad.nix
   ];
   home.username = "derrick";
   home.homeDirectory = "/home/derrick";

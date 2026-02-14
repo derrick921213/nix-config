@@ -187,7 +187,6 @@ screens = [
                 widget.Spacer(length = 8),
                 widget.Image(
                     filename = "~/.config/qtile/icons/tonybtw.png",
-                    scale = "False",
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("qtilekeys-yad")},
                 ),
                 widget.Prompt(
