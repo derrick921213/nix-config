@@ -15,6 +15,11 @@ myTerm = "alacritty"
 @hook.subscribe.startup_once
 def autostart():
     subprocess.run([home + "/.config/qtile/scripts/autostart.sh"])
+    size = os.environ.get("XCURSOR_SIZE", "24")
+    theme = os.environ.get("XCURSOR_THEME", "Bibata-Modern-Ice")
+    xrdb_cmd = f"Xcursor.theme: {theme}\nXcursor.size: {size}"
+    subprocess.run(["xrdb", "-merge"], input=xrdb_cmd, text=True)
+    subprocess.run(["xsetroot", "-cursor_name", "left_ptr"])
 
 keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -187,7 +192,7 @@ screens = [
                 widget.Spacer(length = 8),
                 widget.Image(
                     filename = "~/.config/qtile/icons/tonybtw.png",
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("qtilekeys-yad")},
+                    mouse_callbacks = {'Button1': lambda: qtile.spawn("rofi -show drun -show-icons")},
                 ),
                 widget.Prompt(
                     font = "Ubuntu Mono",
@@ -242,17 +247,17 @@ screens = [
                     fmt = '{}',
                 ),
                 sep,
-                widget.CPU(
-                    foreground = colors[4],
-                    padding = 8, 
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e btop')},
-                    format="CPU: {load_percent}%",
-                ),
-                sep,
+                # widget.CPU(
+                #     foreground = colors[4],
+                #     padding = 8, 
+                #     mouse_callbacks = {'Button1': lambda: qtile.spawn(myTerm + ' -e btop')},
+                #     format="CPU: {load_percent}%",
+                # ),
+                # sep,
                 widget.Memory(
                     foreground = colors[8],
                     padding = 8, 
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e btop')},
+                    mouse_callbacks = {'Button1': lambda: qtile.spawn(myTerm + ' -e btop')},
                     format = 'Mem: {MemUsed:.0f}{mm}',
                 ),
                 sep,
@@ -260,7 +265,7 @@ screens = [
                     update_interval = 60,
                     foreground = colors[5],
                     padding = 8, 
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('notify-disk')},
+                    mouse_callbacks = {'Button1': lambda: qtile.spawn('notify-disk')},
                     partition = '/',
                     format = '{uf}{m} free',
                     fmt = 'Disk: {}',
@@ -279,7 +284,7 @@ screens = [
                 #     unknown_char='?',
                 #     empty_char='!', 
                 #     mouse_callbacks={
-                #         'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e upower -i $(upower -e | grep BAT)'),
+                #         'Button1': lambda: qtile.spawn(myTerm + ' -e upower -i $(upower -e | grep BAT)'),
                 #     },
                 # ),
                 # sep,
@@ -292,7 +297,7 @@ screens = [
                 widget.Clock(
                     foreground = colors[8],
                     padding = 8, 
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('notify-date')},
+                    mouse_callbacks = {'Button1': lambda: qtile.spawn('notify-date')},
                     format = "%a, %b %d - %H:%M",
                 ),
                 widget.Systray(padding = 6),
@@ -341,7 +346,7 @@ auto_minimize = True
 wl_input_rules = None
 
 # xcursor theme (string or None) and size (integer) for Wayland backend
-wl_xcursor_theme = None
-wl_xcursor_size = 24
+# wl_xcursor_theme = None
+# wl_xcursor_size = 12
 
 wmname = "LG3D"

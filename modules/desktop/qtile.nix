@@ -4,9 +4,6 @@
   lib,
   ...
 }: {
-  environment.variables = {
-    XCURSOR_SIZE = "24";
-  };
   services.xserver = {
     enable = true;
     autoRepeatDelay = 200;
@@ -15,6 +12,7 @@
     windowManager.qtile.enable = true;
     displayManager.startx.enable = true;
     desktopManager.runXdgAutostartIfNone = true;
+    upscaleDefaultCursor = false;
   };
   #   services.displayManager.ly.enable = true;
   environment.systemPackages = with pkgs; [
@@ -26,6 +24,5 @@
     btop
     xev
     xorg.xrandr
-    libnotify
   ];
 }

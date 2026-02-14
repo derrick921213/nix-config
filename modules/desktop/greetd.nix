@@ -7,14 +7,14 @@
   services.greetd = {
     enable = true;
     settings.default_session = {
-      user = "greeter";
+      # user = "greeter";
       command = ''
-        ${pkgs.tuigreet}/bin/tuigreet \
+        env LANG=en_US.UTF-8 ${pkgs.tuigreet}/bin/tuigreet \
           --time \
           --asterisks \
           --remember \
           --remember-session \
-          --cmd qtile start
+          --cmd dbus-run-session qtile start
       '';
     };
   };
