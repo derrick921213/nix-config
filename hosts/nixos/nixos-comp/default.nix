@@ -1,15 +1,23 @@
 {
   config,
+  lib,
   pkgs,
   hostname,
   ...
-}: {
+}: let
+  isX86_64 = pkgs.stdenv.hostPlatform.isx86_64;
+in {
   boot = {
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
     supportedFilesystems = ["btrfs"];
+  };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = lib.mkIf isX86_64 true;
   };
 
   fileSystems."/".options = ["compress=zstd" "noatime"];
@@ -105,16 +113,32 @@
     "@wheel"
   ];
 
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    brightnessctl
-    pavucontrol
-    pulseaudio
-    pamixer
-    stirling-pdf
-    affine
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      vim
+      wget
+      brightnessctl
+      pavucontrol
+      pulseaudio
+      pamixer
+      stirling-pdf
+      affine
+      xournalpp
+      kdePackages.okular
+      kdePackages.gwenview
+      kdePackages.kwave
+      kdePackages.k3b
+      nomacs
+      vlc
+      audacity
+      dust
+      ncdu
+      atool
+    ])
+    ++ lib.optionals isX86_64 (with pkgs; [
+      bottles
+      lutris
+    ]);
 
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl];

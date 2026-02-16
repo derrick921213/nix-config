@@ -5,8 +5,10 @@ from libqtile.utils import guess_terminal
 import os
 import subprocess
 
-mod = "mod4"
-alt = "mod1"
+MOD = "mod4"
+ALT = "mod1"
+SHIFT = "shift"
+CONTROL = "control"
 home = os.path.expanduser("~")
 terminal = guess_terminal()
 
@@ -31,57 +33,89 @@ def autostart():
     # subprocess.run(["xsetroot", "-cursor_name", "left_ptr"])
 
 keys = [
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    Key([MOD], "h", lazy.layout.left(), desc="Move focus to left"),
+    Key([MOD], "l", lazy.layout.right(), desc="Move focus to right"),
+    Key([MOD], "j", lazy.layout.down(), desc="Move focus down"),
+    Key([MOD], "k", lazy.layout.up(), desc="Move focus up"),
+    Key([MOD], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([MOD, SHIFT], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
+    Key([MOD, SHIFT], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key([MOD, SHIFT], "j", lazy.layout.shuffle_down(), desc="Move window down"),
+    Key([MOD, SHIFT], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([MOD, CONTROL], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
+    Key([MOD, CONTROL], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key([MOD, CONTROL], "j", lazy.layout.grow_down(), desc="Grow window down"),
+    Key([MOD, CONTROL], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([MOD], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
     Key(
-        [mod, "shift"],
+        [MOD, SHIFT],
         "Return",
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([MOD], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
+    Key([MOD], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([MOD], "q", lazy.window.kill(), desc="Kill focused window"),
     Key(
-        [mod],
+        [MOD],
         "f",
         lazy.window.toggle_fullscreen(),
         desc="Toggle fullscreen on the focused window",
     ),
-    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "d", lazy.spawn("rofi -show drun -show-icons"), desc='Run Launcher'),
-    Key([alt], "Tab", lazy.spawn("rofi -show window -show-icons"), desc='Run Lanucher to switch window'),
+    Key([MOD], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
+    Key([MOD, CONTROL], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([MOD, CONTROL], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([MOD], "d", lazy.spawn("rofi -show drun -show-icons"), desc='Run Launcher'),
+    Key([ALT], "Tab", lazy.spawn("rofi -show window -show-icons"), desc='Run Lanucher to switch window'),
     Key(
-        [mod,alt], 
+        [MOD, SHIFT], 
         "s",
-        lazy.spawn('sh -c "maim -s | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
+        lazy.spawn('sh -c "maim -u -s | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
         desc="Screenshot"
     ),
-    Key([mod], "e", lazy.spawn("dolphin"), desc="File Manager"),
-    Key([mod], "w", lazy.spawn("firefox"), desc="Web Browser"),
+    Key(
+        [ALT, SHIFT],
+        "s",
+        lazy.spawn(
+            'sh -lc \''
+            'dir="$HOME/Pictures/Screenshots"; '
+            'mkdir -p "$dir"; '
+            'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
+            'maim -u -s "$file" && notify-send "Screenshot saved" "$file"'
+            '\''
+        ),
+        desc="Screenshot to file (select area)",
+    ),
+    Key(
+        [MOD, SHIFT], 
+        "a",
+        lazy.spawn('sh -c "maim -u | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
+        desc="Screenshot"
+    ),
+    Key(
+        [ALT, SHIFT],
+        "a",
+        lazy.spawn(
+            'sh -lc \''
+            'dir="$HOME/Pictures/Screenshots"; '
+            'mkdir -p "$dir"; '
+            'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
+            'maim "$file" && notify-send "Screenshot saved" "$file"'
+            '\''
+        ),
+        desc="Full screenshot (instant)",
+    ),
+    Key([MOD], "e", lazy.spawn("dolphin"), desc="File Manager"),
+    Key([MOD], "w", lazy.spawn("firefox"), desc="Web Browser"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5")),
     Key([], "XF86AudioMute",        lazy.spawn("pamixer -t")),
@@ -109,21 +143,21 @@ for i in groups:
         [
             # mod + group number = switch to group
             Key(
-                [mod],
+                [MOD],
                 i.name,
                 lazy.group[i.name].toscreen(),
                 desc=f"Switch to group {i.name}",
             ),
             # mod + shift + group number = switch to & move focused window to group
             # Key(
-            #     [mod, "shift"],
+            #     [MOD, "shift"],
             #     i.name,
             #     lazy.window.togroup(i.name, switch_group=True),
             #     desc=f"Switch to & move focused window to group {i.name}",
             # ),
             # Or, use below if you prefer not to switch to that group.
             # # mod + shift + group number = move focused window to group
-            Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+            Key([MOD, SHIFT], i.name, lazy.window.togroup(i.name),
                 desc="move focused window to group {}".format(i.name)),
         ]
     )
@@ -143,7 +177,7 @@ groups.append(
 
 keys.extend([
     # 按下 mod + u 彈出/收起終端機
-    Key([mod], "u", lazy.group['scratchpad'].dropdown_toggle('term')),
+    Key([MOD], "u", lazy.group['scratchpad'].dropdown_toggle('term')),
 ])
 
 colors = [
@@ -334,9 +368,9 @@ screens = [
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
+    Drag([MOD], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([MOD], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Click([MOD], "Button2", lazy.window.bring_to_front()),
 ]
 
 dgroups_key_binder = None
