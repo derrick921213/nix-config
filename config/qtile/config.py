@@ -12,14 +12,23 @@ terminal = guess_terminal()
 
 myTerm = "alacritty" 
 
+# os.environ["PATH"] = ":".join([
+#     "/run/current-system/sw/bin",
+#     f"{home}/.nix-profile/bin",
+#     "/etc/profiles/per-user/%s/bin" % os.environ.get("USER", ""),
+#     "/nix/var/nix/profiles/default/bin",
+#     "/run/wrappers/bin",
+#     os.environ.get("PATH", ""),
+# ])
+
 @hook.subscribe.startup_once
 def autostart():
     subprocess.run([home + "/.config/qtile/scripts/autostart.sh"])
-    size = os.environ.get("XCURSOR_SIZE", "24")
-    theme = os.environ.get("XCURSOR_THEME", "Bibata-Modern-Ice")
-    xrdb_cmd = f"Xcursor.theme: {theme}\nXcursor.size: {size}"
-    subprocess.run(["xrdb", "-merge"], input=xrdb_cmd, text=True)
-    subprocess.run(["xsetroot", "-cursor_name", "left_ptr"])
+    # size = os.environ.get("XCURSOR_SIZE", "24")
+    # theme = os.environ.get("XCURSOR_THEME", "Bibata-Modern-Ice")
+    # xrdb_cmd = f"Xcursor.theme: {theme}\nXcursor.size: {size}"
+    # subprocess.run(["xrdb", "-merge"], input=xrdb_cmd, text=True)
+    # subprocess.run(["xsetroot", "-cursor_name", "left_ptr"])
 
 keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -73,6 +82,9 @@ keys = [
     ),
     Key([mod], "e", lazy.spawn("dolphin"), desc="File Manager"),
     Key([mod], "w", lazy.spawn("firefox"), desc="Web Browser"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5")),
+    Key([], "XF86AudioMute",        lazy.spawn("pamixer -t")),
 ]
 
 # Add key bindings to switch VTs in Wayland.
@@ -258,7 +270,8 @@ screens = [
                     foreground = colors[8],
                     padding = 8, 
                     mouse_callbacks = {'Button1': lambda: qtile.spawn(myTerm + ' -e btop')},
-                    format = 'Mem: {MemUsed:.0f}{mm}',
+                    # format = 'Mem: {MemUsed:.0f}{mm}',
+                    format = 'Mem: {MemUsed:.0f}{mm}/{MemTotal:.0f}{mm}',
                 ),
                 sep,
                 widget.DF(
@@ -267,7 +280,7 @@ screens = [
                     padding = 8, 
                     mouse_callbacks = {'Button1': lambda: qtile.spawn('notify-disk')},
                     partition = '/',
-                    format = '{uf}{m} free',
+                    format = '{uf}-{m} free',
                     fmt = 'Disk: {}',
                     visible_on_warn = False,
                 ),
@@ -288,10 +301,20 @@ screens = [
                 #     },
                 # ),
                 # sep,
-                widget.Volume(
-                    foreground = colors[7],
-                    padding = 8, 
-                    fmt = 'Vol: {}',
+                widget.GenPollText(
+                    update_interval=1,
+                    func=lambda: subprocess.check_output(
+                        "pamixer --get-volume-human",
+                        shell=True,
+                        text=True
+                    ).strip(),
+                    fmt="Vol: {}",
+                    mouse_callbacks={
+                        'Button1': lambda: qtile.spawn("pavucontrol"),
+                        'Button2': lambda: qtile.spawn("pamixer --toggle-mute"),
+                        'Button4': lambda: qtile.spawn("pamixer -i 5"),
+                        'Button5': lambda: qtile.spawn("pamixer -d 5"),
+                    },
                 ),
                 sep,
                 widget.Clock(

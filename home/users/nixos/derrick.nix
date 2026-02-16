@@ -85,4 +85,5 @@ in {
       # "application/pdf" = [ "draw.desktop" ];
     };
   };
+  systemd.user.startServices = "sd-switch";
 }
