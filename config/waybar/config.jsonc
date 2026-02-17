@@ -81,7 +81,8 @@
     },
     "network": {
         "format": "Online",
-        "format-disconnected": "Disconnected ⚠"
+        "format-disconnected": "Disconnected ⚠",
+        "on-click": "nm-connection-editor"
     },
     "custom/sep": {
         "format" : "|",

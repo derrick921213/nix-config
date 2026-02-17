@@ -143,6 +143,7 @@ in {
       localsend
       clamav
       clamtk
+      networkmanagerapplet
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles
@@ -150,7 +151,8 @@ in {
     ]);
 
   services.resolved.enable = true;
-  services.udev.packages = [pkgs.brightnessctl];
+  services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
+  services.gnome.gnome-keyring.enable = true;
   services.openssh = {
     enable = true;
     settings = {
