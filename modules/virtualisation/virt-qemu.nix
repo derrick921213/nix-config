@@ -1,12 +1,13 @@
-{user,...}:
 {
+  user,
+  pkgs,
+  ...
+}: {
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
-      package = pkgs.qemu_kvm;   # KVM optimized build
-      ovmf.enable = true;        # UEFI support
-      ovmf.packages = [ pkgs.OVMF.fd ];
-      swtpm.enable = true;       # TPM support (Win11 etc.)
+      package = pkgs.qemu_kvm; # KVM optimized build
+      swtpm.enable = true; # TPM support (Win11 etc.)
     };
   };
 
