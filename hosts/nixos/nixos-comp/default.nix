@@ -134,6 +134,15 @@ in {
       dust
       ncdu
       atool
+      qbittorrent-enhanced
+      rclone
+      rclone-ui
+      rclone-browser
+      bleachbit
+      hardinfo2
+      localsend
+      clamav
+      clamtk
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles

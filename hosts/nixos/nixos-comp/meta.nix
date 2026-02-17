@@ -14,6 +14,7 @@
     (self + "/modules/desktop/hyprland.nix")
     (self + "/modules/desktop/qtile.nix")
     (self + "/modules/filemanager/dolphin.nix")
+    (self + "/modules/virtualisation/docker.nix")
     inputs.disko.nixosModules.disko
     inputs.nix-ld.nixosModules.nix-ld
     ./disko.nix
