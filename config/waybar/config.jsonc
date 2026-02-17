@@ -1,10 +1,9 @@
 // -*- mode: jsonc -*-
 {
-    "layer": "top", 
-    "position": "top", 
-    "height": 30, 
-    "spacing": 4, 
-
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 4,
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
@@ -12,9 +11,7 @@
         "hyprland/window",
         "custom/sep"
     ],
-    "modules-center": [
-    ],
-
+    "modules-center": ["custom/hypr-mode", "custom/hypr-mode-help"],
     "modules-right": [
         "custom/sep",
         "network",
@@ -29,7 +26,6 @@
         "custom/sep",
         "tray"
     ],
-
     // Modules configuration
     "hyprland/workspaces": {
         "disable-scroll": true,
@@ -37,10 +33,10 @@
         "warp-on-scroll": false,
         "format": "{name}",
         "persistent-workspaces": {
-            "*" : 9
+            "*": 9
         }
     },
-    "hyprland/window" : {
+    "hyprland/window": {
         "max-length": 40,
         "seperate-outputs": false
     },
@@ -77,7 +73,13 @@
         "format-plugged": "{capacity}% ",
         "format-alt": "Bat {capacity}%",
         "format-time": "{H}:{M}",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     },
     "network": {
         "format": "Online",
@@ -85,7 +87,15 @@
         "on-click": "nm-connection-editor"
     },
     "custom/sep": {
-        "format" : "|",
-        "interval" : 0
+        "format": "|",
+        "interval": 0
+    },
+    "custom/hypr-mode": {
+        "exec": "~/.config/hypr/scripts/mode.sh",
+        "interval": 1
+    },
+    "custom/hypr-mode-help": {
+        "exec": "~/.config/hypr/scripts/mode-help.sh",
+        "interval": 1
     }
 }

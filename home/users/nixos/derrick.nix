@@ -51,6 +51,8 @@ in {
     languagetool
     hunspell
     hunspellDicts.en_US
+    yad
+    socat
 
     (pkgs.writeShellScriptBin "notify-date" ''
       exec ${pkgs.libnotify}/bin/notify-send "Date" "$(${pkgs.coreutils}/bin/date)"
