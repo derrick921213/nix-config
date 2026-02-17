@@ -7,7 +7,6 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # withUWSM = true;
   };
   xdg.portal = {
     enable = true;
@@ -18,9 +17,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    kitty
-    waybar
-    wofi
     wl-clipboard
     grim
     slurp

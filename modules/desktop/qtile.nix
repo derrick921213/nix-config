@@ -14,9 +14,7 @@
     desktopManager.runXdgAutostartIfNone = true;
     upscaleDefaultCursor = false;
   };
-  #   services.displayManager.ly.enable = true;
   environment.systemPackages = with pkgs; [
-    kitty
     rofi
     picom
     maim
