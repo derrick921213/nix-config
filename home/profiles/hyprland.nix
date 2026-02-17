@@ -5,7 +5,12 @@
 }: {
   programs.foot.enable = true;
   programs.waybar.enable = true;
-  wayland.windowManager.hyprland.enable = true;
+  wayland.windowManager.hyprland = {
+    enable = true;
+    systemd.enable = true;
+    extraConfig = "";
+  };
+
   xdg.configFile."foot" = {
     source = builtins.path {
       path = ./../../config/foot;
