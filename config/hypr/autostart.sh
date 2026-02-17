@@ -3,6 +3,9 @@
 pkill waybar
 pkill hyprpaper
 pkill fcitx5
+pkill nm-applet
+
+sleep 0.2
 
 waybar &
 hyprpaper &
