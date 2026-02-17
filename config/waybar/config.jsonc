@@ -60,7 +60,7 @@
         "tooltip": false
     },
     "memory": {
-        "format": "Mem: {used}GiB"
+        "format": "Mem: {used}-GiB"
     },
     "disk": {
         "interval": 60,
