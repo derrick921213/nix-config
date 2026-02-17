@@ -9,9 +9,10 @@
         "hyprland/workspaces",
         "custom/sep",
         "hyprland/window",
-        "custom/sep"
+        "custom/sep",
+        "custom/hypr-mode"
     ],
-    "modules-center": ["custom/hypr-mode", "custom/hypr-mode-help"],
+    "modules-center": [],
     "modules-right": [
         "custom/sep",
         "network",

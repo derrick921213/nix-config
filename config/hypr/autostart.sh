@@ -51,18 +51,14 @@ restart() {
   "$@" &
 }
 
-# --- 你想「每次 reload 都重啟」的：restart ---
 restart "^waybar$" waybar
 restart "^hyprpaper$" hyprpaper
+restart "submap-daemon\.sh" "$HOME/.config/hypr/scripts/submap-daemon.sh"
 
-# fcitx5 建議不要每次都砍掉重啟，讓它常駐更穩
 ensure_running "^fcitx5" fcitx5 -d
 
-# nm-applet 你原本用 --indicator，建議防重複即可
 ensure_running "nm-applet --indicator" nm-applet --indicator
 
-# submap daemon：本來就該常駐，防重複即可
-ensure_running "submap-daemon\.sh" "$HOME/.config/hypr/scripts/submap-daemon.sh"
+#ensure_running "submap-daemon\.sh" "$HOME/.config/hypr/scripts/submap-daemon.sh"
 
-# VMware tools：防重複
 ensure_running "vmware-user-suid-wrapper" vmware-user-suid-wrapper
