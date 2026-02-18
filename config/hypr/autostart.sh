@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 log() { printf '[autostart] %s\n' "$*" >&2; }
 
 ensure_running() {
@@ -39,8 +39,16 @@ ensure_running "nm-applet --indicator" nm-applet --indicator
 
 #ensure_running "submap-daemon\.sh" "$HOME/.config/hypr/scripts/submap-daemon.sh"
 
+# if ! systemctl --user is-active --quiet hyprpolkitagent; then
+#     log "starting hyprpolkitagent via systemd"
+#     systemctl --user start hyprpolkitagent
+# fi
+
 ensure_running "vmware-user-suid-wrapper" vmware-user-suid-wrapper
 ensure_running "snappy-switcher --daemon" snappy-switcher --daemon
+systemctl --user start hyprpolkitagent
+sleep 1
+ensure_running "kwalletd6" kwalletd6
 ensure_running "^hypridle$" hypridle
 ensure_running "^udiskie$" udiskie
 ensure_running "^mako$" mako

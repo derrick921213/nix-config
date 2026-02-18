@@ -23,6 +23,20 @@ in {
   fileSystems."/".options = ["compress=zstd" "noatime"];
   fileSystems."/home".options = ["compress=zstd" "noatime"];
   fileSystems."/nix".options = ["compress=zstd" "noatime"];
+  # fileSystems."/mnt/mac_derrick" = {
+  #   device = "//172.16.125.1/derrick";
+  #   fsType = "cifs";
+  #   options = [
+  #     "credentials=/etc/nixos/smb-secrets"
+  #     "uid=1000"
+  #     "gid=100"
+  #     "file_mode=0664"
+  #     "dir_mode=0775"
+  #     "x-systemd.automount"
+  #     "noauto"
+  #     "x-systemd.idle-timeout=60"
+  #   ];
+  # };
 
   networking = {
     hostName = hostname;
@@ -65,6 +79,11 @@ in {
 
   security.rtkit.enable = true;
   security.pam.services.hyprlock = {};
+  security.pam.services.greetd.kwallet = {
+    enable = true;
+    package = pkgs.kdePackages.kwallet-pam;
+  };
+
   services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
@@ -129,6 +148,9 @@ in {
       kdePackages.gwenview
       kdePackages.kwave
       kdePackages.k3b
+      kdePackages.kwallet
+      kdePackages.kwallet-pam
+      kdePackages.kwalletmanager
       nomacs
       vlc
       audacity
@@ -148,6 +170,8 @@ in {
       file
       xdg-utils
       shared-mime-info
+      kdePackages.polkit-kde-agent-1
+      libsecret
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles
@@ -156,7 +180,8 @@ in {
 
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
-  services.gnome.gnome-keyring.enable = true;
+  # services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableKwallet = true;
   services.openssh = {
     enable = true;
     settings = {

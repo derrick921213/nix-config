@@ -4,6 +4,11 @@
   lib,
   ...
 }: {
+  environment.variables = {
+    KDE_SESSION_VERSION = "6";
+    KDE_FULL_SESSION = "true";
+  };
+
   services.greetd = {
     enable = true;
     settings.default_session = {
@@ -14,7 +19,10 @@
       '';
     };
   };
-  services.dbus.enable = true;
+  services.dbus = {
+    enable = true;
+    # implementation = "broker";
+  };
   security.polkit.enable = true;
   environment.systemPackages = with pkgs; [
     tuigreet
