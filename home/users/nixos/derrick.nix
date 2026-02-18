@@ -78,6 +78,9 @@ in {
       "application/vnd.oasis.opendocument.text" = ["writer.desktop"];
       "application/vnd.oasis.opendocument.spreadsheet" = ["calc.desktop"];
       "application/vnd.oasis.opendocument.presentation" = ["impress.desktop"];
+      "image/jpeg" = ["org.kde.gwenview.desktop"];
+      "image/png" = ["org.kde.gwenview.desktop"];
+      "image/webp" = ["org.kde.gwenview.desktop"];
       # "application/pdf" = [ "draw.desktop" ];
     };
   };
