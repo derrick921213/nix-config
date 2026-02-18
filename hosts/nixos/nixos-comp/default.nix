@@ -145,6 +145,9 @@ in {
       clamav
       clamtk
       networkmanagerapplet
+      file
+      xdg-utils
+      shared-mime-info
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles

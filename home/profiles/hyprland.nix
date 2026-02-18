@@ -33,7 +33,7 @@
     };
     recursive = true;
   };
-  home.file."Pictures/wallpapers/cyberpunk.png".source = self + "/wallpapers/cyberpunk.png";
+  home.file."Pictures/wallpapers/cyberpunk.jpeg".source = self + "/wallpapers/cyberpunk.jpeg";
   home.shellAliases = {
     hyprlog = "cat $XDG_RUNTIME_DIR/hypr/$(ls $XDG_RUNTIME_DIR/hypr/ | head -n 1)/hyprland.log";
   };
