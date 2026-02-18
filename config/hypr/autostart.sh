@@ -41,6 +41,10 @@ ensure_running "nm-applet --indicator" nm-applet --indicator
 
 ensure_running "vmware-user-suid-wrapper" vmware-user-suid-wrapper
 ensure_running "^hypridle$" hypridle
+ensure_running "^udiskie$" udiskie
+ensure_running "^mako$" mako
+ensure_running "^blueman-applet$" blueman-applet
+ensure_running "^pasystray$" pasystray
 ensure_running "hyprlock-lock-listener" bash -lc '
   set -euo pipefail
   exec -a hyprlock-lock-listener bash -lc "

@@ -143,6 +143,7 @@
           pkgs.just
           colmena.packages.${system}.colmena
           deploy-rs.packages.${system}.deploy-rs
+          pkgs.hyprls
           home-manager-unstable.packages.${system}.home-manager
         ];
       };

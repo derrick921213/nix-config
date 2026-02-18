@@ -6,6 +6,10 @@
 }: {
   programs.foot.enable = true;
   programs.waybar.enable = true;
+  services.blueman-applet.enable = true;
+  services.pasystray.enable = true;
+  services.udiskie.enable = true;
+  services.mako.enable = true;
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
