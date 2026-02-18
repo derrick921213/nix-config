@@ -64,6 +64,7 @@ in {
   };
 
   security.rtkit.enable = true;
+  security.pam.services.hyprlock = {};
   services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
