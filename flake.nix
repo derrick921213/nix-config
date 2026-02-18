@@ -37,6 +37,7 @@
     colmena.url = "github:zhaofengli/colmena";
     flake-utils.url = "github:numtide/flake-utils";
     deploy-rs.url = "github:serokell/deploy-rs";
+    snappy-switcher.url = "github:OpalAayan/snappy-switcher";
   };
   outputs = inputs @ {
     self,

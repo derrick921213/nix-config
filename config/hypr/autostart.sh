@@ -40,6 +40,7 @@ ensure_running "nm-applet --indicator" nm-applet --indicator
 #ensure_running "submap-daemon\.sh" "$HOME/.config/hypr/scripts/submap-daemon.sh"
 
 ensure_running "vmware-user-suid-wrapper" vmware-user-suid-wrapper
+ensure_running "snappy-switcher --daemon" snappy-switcher --daemon
 ensure_running "^hypridle$" hypridle
 ensure_running "^udiskie$" udiskie
 ensure_running "^mako$" mako

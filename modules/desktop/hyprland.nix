@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -22,5 +23,6 @@
     slurp
     hyprpaper
     hyprlock
+    inputs.snappy-switcher.packages.${pkgs.system}.default
   ];
 }

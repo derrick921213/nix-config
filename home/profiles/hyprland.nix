@@ -37,6 +37,13 @@
     };
     recursive = true;
   };
+  xdg.configFile."snappy-switcher" = {
+    source = builtins.path {
+      path = ./../../config/snappy-switcher;
+      name = "snappy-switcher-config";
+    };
+    recursive = true;
+  };
   home.file."Pictures/wallpapers/cyberpunk.jpeg".source = self + "/wallpapers/cyberpunk.jpeg";
   home.shellAliases = {
     hyprlog = "cat $XDG_RUNTIME_DIR/hypr/$(ls $XDG_RUNTIME_DIR/hypr/ | head -n 1)/hyprland.log";
