@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  self,
   ...
 }: {
   programs.foot.enable = true;
@@ -32,6 +33,7 @@
     };
     recursive = true;
   };
+  home.file."Pictures/wallpapers/cyberpunk.png".source = self + "./wallpapers/cyberpunk.png";
   home.shellAliases = {
     hyprlog = "cat $XDG_RUNTIME_DIR/hypr/$(ls $XDG_RUNTIME_DIR/hypr/ | head -n 1)/hyprland.log";
   };
