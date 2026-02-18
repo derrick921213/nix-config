@@ -1,28 +1,8 @@
-# #!/usr/bin/env bash
-
-# pkill waybar
-# pkill hyprpaper
-# pkill fcitx5
-# pkill nm-applet
-
-# sleep 0.2
-
-# waybar &
-# hyprpaper &
-# fcitx5 -d &
-# nm-applet --indicator &
-# pgrep -f submap-daemon.sh || ~/.config/hypr/scripts/submap-daemon.sh &
-
-# vmware-user-suid-wrapper &
-
-# # mako &  (通知守護行程)
-
 #!/usr/bin/env bash
 set -euo pipefail
 
 log() { printf '[autostart] %s\n' "$*" >&2; }
 
-# 以「指令片段」做判斷，避免誤殺別的同名程式
 ensure_running() {
   local match="$1"
   shift
@@ -34,14 +14,12 @@ ensure_running() {
   fi
 }
 
-# 有些程式需要重啟（如 waybar/hyprpaper）可以用 restart
 restart() {
   local match="$1"
   shift
   if pgrep -af -- "$match" >/dev/null; then
     log "restarting: $match"
     pkill -f -- "$match" || true
-    # 等一下讓它確實結束
     for _ in {1..20}; do
       pgrep -af -- "$match" >/dev/null || break
       sleep 0.05
@@ -62,3 +40,17 @@ ensure_running "nm-applet --indicator" nm-applet --indicator
 #ensure_running "submap-daemon\.sh" "$HOME/.config/hypr/scripts/submap-daemon.sh"
 
 ensure_running "vmware-user-suid-wrapper" vmware-user-suid-wrapper
+ensure_running "^hypridle$" hypridle
+ensure_running "hyprlock-lock-listener" bash -lc '
+  set -euo pipefail
+  exec -a hyprlock-lock-listener bash -lc "
+    dbus-monitor --system \"type=signal,interface=org.freedesktop.login1.Session,member=Lock\" |
+    while read -r line; do
+      case \"\$line\" in
+        *\"member=Lock\"*)
+          pgrep -x hyprlock >/dev/null 2>&1 || hyprlock &
+          ;;
+      esac
+    done
+  "
+'

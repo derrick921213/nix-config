@@ -54,6 +54,9 @@ in {
     yad
     socat
     wev
+    nwg-displays
+    nwg-look
+    wlr-randr
 
     (pkgs.writeShellScriptBin "notify-date" ''
       exec ${pkgs.libnotify}/bin/notify-send "Date" "$(${pkgs.coreutils}/bin/date)"

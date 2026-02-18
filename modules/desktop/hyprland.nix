@@ -21,5 +21,6 @@
     grim
     slurp
     hyprpaper
+    hyprlock
   ];
 }
