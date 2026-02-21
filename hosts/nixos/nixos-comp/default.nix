@@ -139,7 +139,7 @@ in {
       wget
       brightnessctl
       pavucontrol
-      pulseaudio
+      pasystray
       pamixer
       stirling-pdf
       affine

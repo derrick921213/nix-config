@@ -5,7 +5,7 @@
 }: {
   system = "aarch64-linux";
   user = "derrick";
-  hostip = "172.16.125.143";
+  hostip = "172.16.125.144";
   remoteBuild = true;
   diskDevice = "/dev/nvme0n1";
   extraModules = [
@@ -23,7 +23,7 @@
   firewall-tags = ["ssh" "web"];
   pkgsChannel = "stable";
   deployment = {
-    targetHost = "172.16.125.143";
+    targetHost = "172.16.125.144";
     targetUser = "derrick";
     targetPort = 22;
     buildOnTarget = true;
