@@ -19,7 +19,7 @@ in {
   gtk = {
     enable = true;
     theme = {
-      name = "TokyoNight-Regular";
+      name = "Tokyonight-Dark";
       package = pkgs.tokyonight-gtk-theme;
     };
     cursorTheme = {
