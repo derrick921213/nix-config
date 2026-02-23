@@ -166,7 +166,8 @@ window_mode = KeyChord(
         Key([], "q", lazy.window.kill(), desc="Kill window"),
         Key([], "f", lazy.window.toggle_fullscreen(), desc="Fullscreen"),
         Key([], "v", lazy.window.toggle_floating(), desc="Toggle floating"),
-        Key([], "r", sh(home + "/.config/hypr/autostart.sh"), desc="Reload waybar/autostart"),
+        # Key([], "r", sh(home + "/.config/hypr/autostart.sh"), desc="Reload waybar/autostart"),
+        Key([], "r", lazy.reload_config(), desc="Reload the config"),
     ],
     mode=True,
     name="window"
@@ -275,7 +276,6 @@ leader = KeyChord(
     [MOD], "space",
     [
         Key([], "escape", lazy.ungrab_chord(), desc="Exit leader"),
-        Key([], "space",  lazy.ungrab_chord(), desc="Exit leader"),
         Key([], "slash",  lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Show mode help"),
 
         window_mode,
@@ -449,6 +449,29 @@ screens = [
                     padding = 2,
                     fontsize = 14
                 ),
+                widget.Chord(
+                    foreground=colors[8],
+                    padding=8,
+                    fmt="Mode: {}",
+                    name_transform=lambda n: {
+                        " ": "Normal",
+                        "leader": "LEADER",
+                        "window": "WINDOW",
+                        "move": "MOVE",
+                        "resize": "RESIZE",
+                        "screenshot": "SHOT",
+                        "power": "POWER",
+                        "apps": "APPS",
+                    }.get(n, (n or "").upper()),
+                ),
+                widget.TextBox(
+                    text = '|',
+                    font = "JetBrainsMono Nerd Font Propo Bold",
+                    foreground = colors[9],
+                    padding = 2,
+                    fontsize = 14
+                ),
+                
                 widget.WindowName(
                     foreground = colors[6],
                     padding = 8,

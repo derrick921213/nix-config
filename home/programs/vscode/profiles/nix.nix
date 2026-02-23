@@ -8,6 +8,7 @@
       common.commonExtensions
       ++ (with pkgs.vscode-extensions; [
         kamadorueda.alejandra
+        ms-python.python
         bbenoist.nix
         skellock.just
       ]);
