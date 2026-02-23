@@ -4,6 +4,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 import os
 import subprocess
+from typing import Callable, Optional
 
 MOD = "mod4"
 ALT = "mod1"
@@ -32,94 +33,262 @@ def autostart():
     # subprocess.run(["xrdb", "-merge"], input=xrdb_cmd, text=True)
     # subprocess.run(["xsetroot", "-cursor_name", "left_ptr"])
 
+def sh(cmd: str):
+    """Spawn via shell; prefer this for complex pipelines."""
+    return lazy.spawn(f"zsh -lc {cmd!r}")
+
+def maybe_layout(method_name: str, *args, fallback: Optional[Callable] = None):
+    """
+    Call layout method if it exists (prevents crashes on layouts missing methods).
+    Example: maybe_layout("grow_left")
+    """
+    @lazy.function
+    def _inner(qtile):
+        lay = qtile.current_layout
+        fn = getattr(lay, method_name, None)
+        if callable(fn):
+            fn(*args)
+        elif fallback:
+            fallback(qtile)
+    return _inner
+
+def notify(msg: str, title: str = "Qtile"):
+    return sh(f'notify-send {title!r} {msg!r}')
+
+# keys = [
+#     Key([MOD], "h", lazy.layout.left(), desc="Move focus to left"),
+#     Key([MOD], "l", lazy.layout.right(), desc="Move focus to right"),
+#     Key([MOD], "j", lazy.layout.down(), desc="Move focus down"),
+#     Key([MOD], "k", lazy.layout.up(), desc="Move focus up"),
+#     Key([MOD], "space", lazy.layout.next(), desc="Move window focus to other window"),
+#     # Move windows between left/right columns or move up/down in current stack.
+#     # Moving out of range in Columns layout will create new column.
+#     Key([MOD, SHIFT], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
+#     Key([MOD, SHIFT], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+#     Key([MOD, SHIFT], "j", lazy.layout.shuffle_down(), desc="Move window down"),
+#     Key([MOD, SHIFT], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+#     # Grow windows. If current window is on the edge of screen and direction
+#     # will be to screen edge - window would shrink.
+#     Key([MOD, CONTROL], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
+#     Key([MOD, CONTROL], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
+#     Key([MOD, CONTROL], "j", lazy.layout.grow_down(), desc="Grow window down"),
+#     Key([MOD, CONTROL], "k", lazy.layout.grow_up(), desc="Grow window up"),
+#     Key([MOD], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+#     # Toggle between split and unsplit sides of stack.
+#     # Split = all windows displayed
+#     # Unsplit = 1 window displayed, like Max layout, but still with
+#     # multiple stack panes
+#     Key(
+#         [MOD, SHIFT],
+#         "Return",
+#         lazy.layout.toggle_split(),
+#         desc="Toggle between split and unsplit sides of stack",
+#     ),
+#     Key([MOD], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+#     # Toggle between different layouts as defined below
+#     Key([MOD], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+#     Key([MOD], "q", lazy.window.kill(), desc="Kill focused window"),
+#     Key(
+#         [MOD],
+#         "f",
+#         lazy.window.toggle_fullscreen(),
+#         desc="Toggle fullscreen on the focused window",
+#     ),
+#     Key([MOD], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
+#     Key([MOD, CONTROL], "r", lazy.reload_config(), desc="Reload the config"),
+#     Key([MOD, CONTROL], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+#     Key([MOD], "d", lazy.spawn("rofi -show drun -show-icons"), desc='Run Launcher'),
+#     Key([ALT], "Tab", lazy.spawn("rofi -show window -show-icons"), desc='Run Lanucher to switch window'),
+#     Key(
+#         [MOD, SHIFT], 
+#         "s",
+#         lazy.spawn('sh -c "maim -u -s | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
+#         desc="Screenshot"
+#     ),
+#     Key(
+#         [ALT, SHIFT],
+#         "s",
+#         lazy.spawn(
+#             'sh -lc \''
+#             'dir="$HOME/Pictures/Screenshots"; '
+#             'mkdir -p "$dir"; '
+#             'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
+#             'maim -u -s "$file" && notify-send "Screenshot saved" "$file"'
+#             '\''
+#         ),
+#         desc="Screenshot to file (select area)",
+#     ),
+#     Key(
+#         [MOD, SHIFT], 
+#         "a",
+#         lazy.spawn('sh -c "maim -u | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
+#         desc="Screenshot"
+#     ),
+#     Key(
+#         [ALT, SHIFT],
+#         "a",
+#         lazy.spawn(
+#             'sh -lc \''
+#             'dir="$HOME/Pictures/Screenshots"; '
+#             'mkdir -p "$dir"; '
+#             'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
+#             'maim "$file" && notify-send "Screenshot saved" "$file"'
+#             '\''
+#         ),
+#         desc="Full screenshot (instant)",
+#     ),
+#     Key([MOD], "e", lazy.spawn("dolphin"), desc="File Manager"),
+#     Key([MOD], "w", lazy.spawn("firefox"), desc="Web Browser"),
+#     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5")),
+#     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5")),
+#     Key([], "XF86AudioMute",        lazy.spawn("pamixer -t")),
+# ]
+
 keys = [
-    Key([MOD], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([MOD], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([MOD], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([MOD], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([MOD], "space", lazy.layout.next(), desc="Move window focus to other window"),
-    # Move windows between left/right columns or move up/down in current stack.
-    # Moving out of range in Columns layout will create new column.
-    Key([MOD, SHIFT], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([MOD, SHIFT], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([MOD, SHIFT], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([MOD, SHIFT], "k", lazy.layout.shuffle_up(), desc="Move window up"),
-    # Grow windows. If current window is on the edge of screen and direction
-    # will be to screen edge - window would shrink.
-    Key([MOD, CONTROL], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([MOD, CONTROL], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([MOD, CONTROL], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([MOD, CONTROL], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([MOD], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed
-    # Unsplit = 1 window displayed, like Max layout, but still with
-    # multiple stack panes
-    Key(
-        [MOD, SHIFT],
-        "Return",
-        lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack",
-    ),
-    Key([MOD], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    # Toggle between different layouts as defined below
-    Key([MOD], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([MOD], "q", lazy.window.kill(), desc="Kill focused window"),
-    Key(
-        [MOD],
-        "f",
-        lazy.window.toggle_fullscreen(),
-        desc="Toggle fullscreen on the focused window",
-    ),
-    Key([MOD], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
-    Key([MOD, CONTROL], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([MOD, CONTROL], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([MOD], "d", lazy.spawn("rofi -show drun -show-icons"), desc='Run Launcher'),
-    Key([ALT], "Tab", lazy.spawn("rofi -show window -show-icons"), desc='Run Lanucher to switch window'),
-    Key(
-        [MOD, SHIFT], 
-        "s",
-        lazy.spawn('sh -c "maim -u -s | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
-        desc="Screenshot"
-    ),
-    Key(
-        [ALT, SHIFT],
-        "s",
-        lazy.spawn(
-            'sh -lc \''
-            'dir="$HOME/Pictures/Screenshots"; '
-            'mkdir -p "$dir"; '
-            'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
-            'maim -u -s "$file" && notify-send "Screenshot saved" "$file"'
-            '\''
-        ),
-        desc="Screenshot to file (select area)",
-    ),
-    Key(
-        [MOD, SHIFT], 
-        "a",
-        lazy.spawn('sh -c "maim -u | xclip -selection clipboard -t image/png -i && notify-send \\"截圖已儲存至剪貼簿\\" "'),
-        desc="Screenshot"
-    ),
-    Key(
-        [ALT, SHIFT],
-        "a",
-        lazy.spawn(
-            'sh -lc \''
-            'dir="$HOME/Pictures/Screenshots"; '
-            'mkdir -p "$dir"; '
-            'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
-            'maim "$file" && notify-send "Screenshot saved" "$file"'
-            '\''
-        ),
-        desc="Full screenshot (instant)",
-    ),
-    Key([MOD], "e", lazy.spawn("dolphin"), desc="File Manager"),
-    Key([MOD], "w", lazy.spawn("firefox"), desc="Web Browser"),
+    # ====== Global ======
+    Key([MOD], "Return", lazy.spawn(terminal), desc="Terminal"),
+    Key([MOD], "d", lazy.spawn("rofi -show drun -show-icons"), desc="App launcher"),
+    Key([ALT], "Tab", lazy.spawn("rofi -show window -show-icons"), desc="Window switcher"),
+    Key([ALT, SHIFT], "Tab", lazy.spawn("rofi -show window -show-icons"), desc="Window switcher (reverse)"),
+
+    # 你原本的音量鍵
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5")),
     Key([], "XF86AudioMute",        lazy.spawn("pamixer -t")),
 ]
+
+window_mode = KeyChord(
+    [], "w",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit window mode"),
+        Key([], "slash", lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Help"),
+
+        Key([], "q", lazy.window.kill(), desc="Kill window"),
+        Key([], "f", lazy.window.toggle_fullscreen(), desc="Fullscreen"),
+        Key([], "v", lazy.window.toggle_floating(), desc="Toggle floating"),
+        Key([], "r", sh(home + "/.config/hypr/autostart.sh"), desc="Reload waybar/autostart"),
+    ],
+    mode=True,
+    name="window"
+)
+
+move_mode = KeyChord(
+    [], "m",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit move mode"),
+        Key([], "slash", lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Help"),
+
+        # focus (HJKL)
+        Key([], "h", lazy.layout.left(), desc="Focus left"),
+        Key([], "l", lazy.layout.right(), desc="Focus right"),
+        Key([], "k", lazy.layout.up(), desc="Focus up"),
+        Key([], "j", lazy.layout.down(), desc="Focus down"),
+
+        # move window (SHIFT+HJKL)
+        Key([SHIFT], "h", lazy.layout.shuffle_left(), desc="Move window left"),
+        Key([SHIFT], "l", lazy.layout.shuffle_right(), desc="Move window right"),
+        Key([SHIFT], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+        Key([SHIFT], "j", lazy.layout.shuffle_down(), desc="Move window down"),
+    ],
+    mode=True,
+    name="move"
+)
+
+resize_mode = KeyChord(
+    [], "r",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit resize mode"),
+        Key([], "slash", lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Help"),
+
+        Key([], "h", maybe_layout("grow_left"), desc="Grow left"),
+        Key([], "l", maybe_layout("grow_right"), desc="Grow right"),
+        Key([], "k", maybe_layout("grow_up"), desc="Grow up"),
+        Key([], "j", maybe_layout("grow_down"), desc="Grow down"),
+        Key([], "n", lazy.layout.normalize(), desc="Normalize"),
+    ],
+    mode=True,
+    name="resize"
+)
+
+screenshot_mode = KeyChord(
+    [], "s",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit screenshot mode"),
+        Key([], "slash", lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Help"),
+
+        # S: 選取區域 → clipboard
+        Key([], "s", sh('maim -u -s | xclip -selection clipboard -t image/png -i && notify-send "Screenshot" "saved to clipboard"'), desc="Area -> clipboard"),
+
+        # A: 全螢幕 → clipboard
+        Key([], "a", sh('maim -u | xclip -selection clipboard -t image/png -i && notify-send "Screenshot" "saved to clipboard"'), desc="Full -> clipboard"),
+
+        # F: 選取區域 → file
+        Key([], "f", sh(
+            'dir="$HOME/Pictures/Screenshots"; mkdir -p "$dir"; '
+            'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
+            'maim -u -s "$file" && notify-send "Screenshot saved" "$file"'
+        ), desc="Area -> file"),
+
+        # P: 全螢幕 → file
+        Key([], "p", sh(
+            'dir="$HOME/Pictures/Screenshots"; mkdir -p "$dir"; '
+            'file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"; '
+            'maim -u "$file" && notify-send "Screenshot saved" "$file"'
+        ), desc="Full -> file"),
+    ],
+    mode=True,
+    name="screenshot"
+)
+
+power_mode = KeyChord(
+    [], "p",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit power mode"),
+        Key([], "slash", lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Help"),
+
+        Key([], "l", sh("loginctl lock-session"), desc="Lock session"),
+        Key([], "q", lazy.shutdown(), desc="Quit Qtile"),
+        Key([], "r", sh("systemctl reboot"), desc="Reboot"),
+        Key([], "p", sh("systemctl poweroff"), desc="Poweroff"),
+    ],
+    mode=True,
+    name="power"
+)
+
+apps_mode = KeyChord(
+    [], "a",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit apps mode"),
+        Key([], "slash", lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Help"),
+
+        Key([], "t", lazy.spawn(terminal), desc="Terminal"),
+        Key([], "e", lazy.spawn("dolphin"), desc="File manager"),
+        Key([], "b", lazy.spawn("firefox"), desc="Browser"),
+        Key([], "d", lazy.spawn("rofi -show drun -show-icons"), desc="Launcher"),
+    ],
+    mode=True,
+    name="apps"
+)
+
+
+leader = KeyChord(
+    [MOD], "space",
+    [
+        Key([], "escape", lazy.ungrab_chord(), desc="Exit leader"),
+        Key([], "space",  lazy.ungrab_chord(), desc="Exit leader"),
+        Key([], "slash",  lazy.spawn(home + "/.config/hypr/scripts/show-mode-help.sh"), desc="Show mode help"),
+
+        window_mode,
+        resize_mode,
+        move_mode,
+        screenshot_mode,
+        power_mode,
+        apps_mode,
+    ],
+    mode=True,
+    name="leader"
+)
+keys.append(leader)
 
 # Add key bindings to switch VTs in Wayland.
 # We can't check qtile.core.name in default config as it is loaded before qtile is started

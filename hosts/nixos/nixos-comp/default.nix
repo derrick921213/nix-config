@@ -7,22 +7,26 @@
 }: let
   isX86_64 = pkgs.stdenv.hostPlatform.isx86_64;
 in {
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    supportedFilesystems = ["btrfs"];
-  };
+  #boot = {
+  #  loader = {
+  #    systemd-boot.enable = true;
+  #    efi.canTouchEfiVariables = true;
+  #  };
+  #  supportedFilesystems = ["btrfs"];
+  #};
+
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.useOSProber = true;
 
   hardware.graphics = {
     enable = true;
     enable32Bit = lib.mkIf isX86_64 true;
   };
 
-  fileSystems."/".options = ["compress=zstd" "noatime"];
-  fileSystems."/home".options = ["compress=zstd" "noatime"];
-  fileSystems."/nix".options = ["compress=zstd" "noatime"];
+  #fileSystems."/".options = ["compress=zstd" "noatime"];
+  #fileSystems."/home".options = ["compress=zstd" "noatime"];
+  #fileSystems."/nix".options = ["compress=zstd" "noatime"];
   # fileSystems."/mnt/mac_derrick" = {
   #   device = "//172.16.125.1/derrick";
   #   fsType = "cifs";
