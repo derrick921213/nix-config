@@ -7,7 +7,7 @@
   user = "derrick";
   hostip = "172.16.125.144";
   remoteBuild = true;
-  diskDevice = "/dev/sda";
+  diskDevice = "/dev/nvme0n1";
   extraModules = [
     (self + "/modules/filewall/firewall.nix")
     (self + "/modules/desktop/greetd.nix")
