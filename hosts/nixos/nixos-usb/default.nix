@@ -8,10 +8,21 @@
   isX86_64 = pkgs.stdenv.hostPlatform.isx86_64;
 in {
   boot = {
-   loader = {
-     systemd-boot.enable = true;
-     efi.canTouchEfiVariables = false;
-   };
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = false;
+    };
+  };
+
+  fileSystems."/" = lib.mkDefault {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+    options = ["noatime"];
+  };
+
+  fileSystems."/boot" = lib.mkDefault {
+    device = "/dev/disk/by-label/ESP";
+    fsType = "vfat";
   };
 
   hardware.graphics = {
@@ -27,7 +38,7 @@ in {
   time.timeZone = "Asia/Taipei";
 
   i18n.defaultLocale = "zh_TW.UTF-8";
-  
+
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "zh_TW.UTF-8";
     LC_IDENTIFICATION = "zh_TW.UTF-8";
