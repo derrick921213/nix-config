@@ -22,5 +22,6 @@ in {
   programs.vscode = {
     enable = true;
     inherit profiles;
+    mutableExtensionsDir = true;
   };
 }
