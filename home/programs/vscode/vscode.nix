@@ -28,11 +28,11 @@
   ...
 }: let
   common = import ./common.nix {inherit pkgs lib;};
+  allProfiles = import ./profiles/default.nix {inherit pkgs common;};
 in {
   programs.vscode = {
     enable = true;
-    extensions = common.commonExtensions;
-    userSettings = common.commonUserSettings;
+    profiles = allProfiles;
     mutableExtensionsDir = true;
   };
 }
