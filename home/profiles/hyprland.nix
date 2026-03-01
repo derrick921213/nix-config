@@ -4,7 +4,7 @@
   self,
   ...
 }: let
-  dotfiles = "${config.home.homeDirectory}/nix-config/config";
+  dotfiles = "/home/derrick/nix-config/config";
   create_symlink = name: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${name}";
   targetConfigs = ["foot" "hypr" "waybar" "snappy-switcher"];
 in {
