@@ -179,6 +179,7 @@ in {
       libsecret
       gnupg
       pinentry-qt
+      mesa-demos
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles

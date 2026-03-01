@@ -29,5 +29,6 @@
     hyprlock
     hyprpolkitagent
     inputs.snappy-switcher.packages.${stdenv.hostPlatform.system}.default
+    # open-vm-tools
   ];
 }
