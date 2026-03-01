@@ -177,6 +177,8 @@ in {
       shared-mime-info
       kdePackages.polkit-kde-agent-1
       libsecret
+      gnupg
+      pinentry-qt
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles
@@ -186,6 +188,11 @@ in {
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
   programs.seahorse.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-qt;
+  };
   # services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableKwallet = true;
   security.pam.services.login.kwallet.enable = true;
