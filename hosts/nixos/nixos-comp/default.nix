@@ -7,17 +7,17 @@
 }: let
   isX86_64 = pkgs.stdenv.hostPlatform.isx86_64;
 in {
-  #boot = {
-  #  loader = {
-  #    systemd-boot.enable = true;
-  #    efi.canTouchEfiVariables = true;
-  #  };
-  #  supportedFilesystems = ["btrfs"];
-  #};
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    supportedFilesystems = ["btrfs"];
+  };
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.device = "/dev/sda";
+  # boot.loader.grub.useOSProber = true;
 
   hardware.graphics = {
     enable = true;
