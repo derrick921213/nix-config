@@ -28,6 +28,6 @@
     hyprpaper
     hyprlock
     hyprpolkitagent
-    inputs.snappy-switcher.packages.${pkgs.system}.default
+    inputs.snappy-switcher.packages.${stdenv.hostPlatform.system}.default
   ];
 }
