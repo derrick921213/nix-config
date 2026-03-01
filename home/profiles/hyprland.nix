@@ -11,16 +11,15 @@
   services.udiskie.enable = true;
   services.mako.enable = true;
   services.hyprpolkitagent.enable = true;
+  services.cliphist = {
+    enable = true;
+    allowImages = true; 
+  };
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
     extraConfig = "";
   };
-
-  # xdg.configFile."kwalletrc".text = ''
-  #   [Wallet]
-  #   Enabled=false
-  # '';
 
   xdg.configFile."foot" = {
     source = builtins.path {

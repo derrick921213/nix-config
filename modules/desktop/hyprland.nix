@@ -21,6 +21,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    cliphist
     wl-clipboard
     grim
     slurp
