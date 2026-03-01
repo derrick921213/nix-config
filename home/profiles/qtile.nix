@@ -11,7 +11,7 @@
   #   recursive = true;
   # };
   xdg.configFile."qtile" = {
-    source = config.lib.mkOutOfStoreSymlink "/home/derrick/.config/nix-config/config/qtile";
+    source = config.lib.file.mkOutOfStoreSymlink "/home/derrick/.config/nix-config/config/qtile";
     recursive = true;
   };
 }
