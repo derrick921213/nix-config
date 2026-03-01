@@ -19,7 +19,7 @@
     inputs.disko.nixosModules.disko
     inputs.nix-ld.nixosModules.nix-ld
     ./disko.nix
-    #./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
   firewall-tags = ["ssh" "web"];
   pkgsChannel = "stable";

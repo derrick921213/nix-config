@@ -191,7 +191,6 @@ in {
   security.pam.services.login.kwallet.enable = true;
   environment.variables = {
     GASKPASS = "${pkgs.kdePackages.kdialog}/bin/kdialog";
-    dbus-update-activation-environment = "--all";
   };
   services.openssh = {
     enable = true;
