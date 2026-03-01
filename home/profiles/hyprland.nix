@@ -27,7 +27,7 @@ in {
 
   xdg.configFile = pkgs.lib.genAttrs targetConfigs (name: {
     source = create_symlink name;
-    recursive = true;
+    recursive = false;
   });
 
   # xdg.configFile."foot" = {
