@@ -155,6 +155,7 @@ in {
       kdePackages.kwallet
       kdePackages.kwallet-pam
       kdePackages.kwalletmanager
+      kdePackages.kdialog
       nomacs
       vlc
       audacity
@@ -189,7 +190,7 @@ in {
   security.pam.services.greetd.enableKwallet = true;
   security.pam.services.login.kwallet.enable = true;
   environment.variables = {
-    GASKPASS = "${pkgs.kdialog}/bin/kdialog";
+    GASKPASS = "${pkgs.kdePackages.kdialog}/bin/kdialog";
     dbus-update-activation-environment = "--all";
   };
   services.openssh = {
