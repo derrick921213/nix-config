@@ -4,7 +4,7 @@
   self,
   ...
 }: let
-  dotfiles = "/home/derrick/nix-config/config";
+  dotfiles = "${config.home.homeDirectory}/nix-config/config";
   create_symlink = name: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${name}";
   targetConfigs = ["foot" "hypr" "waybar" "snappy-switcher"];
 in {
@@ -19,11 +19,11 @@ in {
     enable = true;
     allowImages = true;
   };
-  wayland.windowManager.hyprland = {
-    enable = true;
-    systemd.enable = true;
-    extraConfig = "";
-  };
+  # wayland.windowManager.hyprland = {
+  #   enable = true;
+  #   systemd.enable = true;
+  #   extraConfig = "";
+  # };
 
   xdg.configFile = pkgs.lib.genAttrs targetConfigs (name: {
     source = create_symlink name;
