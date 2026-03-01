@@ -24,9 +24,9 @@ in {
     enable32Bit = lib.mkIf isX86_64 true;
   };
 
-  #fileSystems."/".options = ["compress=zstd" "noatime"];
-  #fileSystems."/home".options = ["compress=zstd" "noatime"];
-  #fileSystems."/nix".options = ["compress=zstd" "noatime"];
+  fileSystems."/".options = ["compress=zstd" "noatime"];
+  fileSystems."/home".options = ["compress=zstd" "noatime"];
+  fileSystems."/nix".options = ["compress=zstd" "noatime"];
   # fileSystems."/mnt/mac_derrick" = {
   #   device = "//172.16.125.1/derrick";
   #   fsType = "cifs";
