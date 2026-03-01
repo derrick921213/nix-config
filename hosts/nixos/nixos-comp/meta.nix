@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  system = "x86_64-linux";
+  system = "aarch64-linux";
   user = "derrick";
   hostip = "172.16.125.144";
   remoteBuild = true;
@@ -16,10 +16,10 @@
     (self + "/modules/filemanager/dolphin.nix")
     (self + "/modules/virtualisation/docker.nix")
     (self + "/modules/virtualisation/virt-qemu.nix")
-    # inputs.disko.nixosModules.disko
+    inputs.disko.nixosModules.disko
     inputs.nix-ld.nixosModules.nix-ld
-    # ./disko.nix
-    ./hardware-configuration.nix
+    ./disko.nix
+    #./hardware-configuration.nix
   ];
   firewall-tags = ["ssh" "web"];
   pkgsChannel = "stable";
