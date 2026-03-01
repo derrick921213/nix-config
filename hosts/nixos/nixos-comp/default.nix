@@ -184,8 +184,14 @@ in {
 
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
+  programs.seahorse.enable = true;
   # services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableKwallet = true;
+  security.pam.services.login.kwallet.enable = true;
+  environment.variables = {
+    GASKPASS = "${pkgs.kdialog}/bin/kdialog";
+    dbus-update-activation-environment = "--all";
+  };
   services.openssh = {
     enable = true;
     settings = {

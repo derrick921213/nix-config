@@ -3,7 +3,11 @@
   pkgs,
   self,
   ...
-}: {
+}: let
+  dotfiles = "${config.home.homeDirectory}/.config/nix-config/config";
+  create_symlink = name: config.lib.mkOutOfStoreSymlink "${dotfiles}/${name}";
+  targetConfigs = ["foot" "hypr" "waybar" "snappy-switcher"];
+in {
   programs.foot.enable = true;
   programs.waybar.enable = true;
   services.blueman-applet.enable = true;
@@ -13,7 +17,7 @@
   services.hyprpolkitagent.enable = true;
   services.cliphist = {
     enable = true;
-    allowImages = true; 
+    allowImages = true;
   };
   wayland.windowManager.hyprland = {
     enable = true;
@@ -21,34 +25,27 @@
     extraConfig = "";
   };
 
-  xdg.configFile."foot" = {
-    source = builtins.path {
-      path = ./../../config/foot;
-      name = "foot-config";
-    };
+  xdg.configFile = pkgs.lib.genAttrs targetConfigs (name: {
+    source = create_symlink name;
     recursive = true;
-  };
-  xdg.configFile."hypr" = {
-    source = builtins.path {
-      path = ./../../config/hypr;
-      name = "hyprland-config";
-    };
-    recursive = true;
-  };
-  xdg.configFile."waybar" = {
-    source = builtins.path {
-      path = ./../../config/waybar;
-      name = "waybar-config";
-    };
-    recursive = true;
-  };
-  xdg.configFile."snappy-switcher" = {
-    source = builtins.path {
-      path = ./../../config/snappy-switcher;
-      name = "snappy-switcher-config";
-    };
-    recursive = true;
-  };
+  });
+
+  # xdg.configFile."foot" = {
+  #   source = create_symlink "foot";
+  #   recursive = true;
+  # };
+  # xdg.configFile."hypr" = {
+  #   source = create_symlink "hypr";
+  #   recursive = true;
+  # };
+  # xdg.configFile."waybar" = {
+  #   source = create_symlink "waybar";
+  #   recursive = true;
+  # };
+  # xdg.configFile."snappy-switcher" = {
+  #   source = create_symlink "snappy-switcher";
+  #   recursive = true;
+  # };
   home.file."Pictures/wallpapers/cyberpunk.jpeg".source = self + "/wallpapers/cyberpunk.jpeg";
   home.shellAliases = {
     hyprlog = "cat $XDG_RUNTIME_DIR/hypr/$(ls $XDG_RUNTIME_DIR/hypr/ | head -n 1)/hyprland.log";
