@@ -4,6 +4,10 @@
   user,
   ...
 }: {
+  environment.systemPackages = with pkgs; [
+    docker-buildx
+    docker-compose
+  ];
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
