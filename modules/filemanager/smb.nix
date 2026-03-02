@@ -19,6 +19,9 @@
       idmap config * : range = 3000-7999
       idmap config MAY-GOD : backend = rid
       idmap config MAY-GOD : range = 10000-999999
+      client signing = yes
+      client use spnego = yes
+      kerberos method = secrets and keytab
     '';
   };
   services.samba-wsdd.enable = true;
