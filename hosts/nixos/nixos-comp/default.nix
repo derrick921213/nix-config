@@ -177,6 +177,7 @@ in {
       shared-mime-info
       kdePackages.polkit-kde-agent-1
       libsecret
+      dig
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       bottles
