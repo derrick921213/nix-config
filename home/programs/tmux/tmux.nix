@@ -1,8 +1,6 @@
+{ config, pkgs, ... }:
+
 {
-  config,
-  pkgs,
-  ...
-}: {
   programs.tmux = {
     enable = true;
     shortcut = "b";
@@ -11,54 +9,74 @@
     historyLimit = 10000;
     keyMode = "vi";
     mouse = true;
-    terminal = "screen-256color";
+    terminal = "tmux-256color";
 
     plugins = with pkgs.tmuxPlugins; [
       resurrect
     ];
 
     extraConfig = ''
-      bind C-a send-prefix
+      ##### Terminal / colors #####
+      # Use tmux terminfo and enable truecolor
+      set -g default-terminal "tmux-256color"
+      set -as terminal-overrides ",*:Tc"
 
-      # 視窗與面板初始編號 (Home Manager 有時會覆寫，這裡再確認一次)
+      ##### Index #####
+      set -g base-index 1
       setw -g pane-base-index 1
 
-      # 面板分割
-      bind | split-window -h -c '#{pane_current_path}'
-      bind - split-window -v -c '#{pane_current_path}'
+      ##### Pane split (keep cwd) #####
       unbind '"'
       unbind %
+      bind | split-window -h -c '#{pane_current_path}'
+      bind - split-window -v -c '#{pane_current_path}'
 
-      # 面板移動與縮放
+      ##### Move between panes (vim-like) #####
       bind h select-pane -L
       bind j select-pane -D
       bind k select-pane -U
       bind l select-pane -R
+
+      ##### Resize panes #####
       bind -r H resize-pane -L 5
       bind -r J resize-pane -D 5
       bind -r K resize-pane -U 5
       bind -r L resize-pane -R 5
 
-      # 狀態列與配色 (根據你的原始配置)
+      ##### Copy mode (vi) #####
+      setw -g mode-keys vi
+
+      ##### Activity alerts #####
+      setw -g monitor-activity on
+      set -g visual-activity on
+
+      ##### Status bar layout #####
       set -g status-justify centre
       set -g status-left-length 40
-      set -g status-left "#[fg=green]Session: #S #[fg=yellow]W#I #[fg=cyan]P#P"
-      set -g status-right "#[fg=cyan]%d %b %R #[fg=magenta]#H"
       set -g status-interval 60
 
-      # 視窗配色 (注意：較新版 tmux 語法略有不同，NixOS 建議使用新語法)
-      setw -g window-status-style fg=cyan,bg=default,dim
-      setw -g window-status-current-style fg=white,bg=yellow,bright
+      ##### Theme (truecolor, Tokyonight-ish; stable across terminals) #####
+      # Background / foreground baseline
+      set -g status-style "fg=#c0caf5,bg=#1a1b26"
 
-      # 面板配色
-      set -g pane-border-style fg=green,bg=black
-      set -g pane-active-border-style fg=white,bg=yellow
+      # Left / right content
+      set -g status-left  "#[fg=#9ece6a]Session: #S #[fg=#e0af68]W#I #[fg=#7dcfff]P#P"
+      set -g status-right "#[fg=#7dcfff]%d %b %R #[fg=#bb9af7]#H"
 
-      # 訊息列
-      set -g message-style fg=white,bg=black
+      # Window list
+      setw -g window-status-style "fg=#7aa2f7,bg=default,dim"
+      setw -g window-status-current-style "fg=#1a1b26,bg=#e0af68,bold"
 
-      # 重載快捷鍵
-      bind r source-file ~/.config/tmux/tmux.conf \; display "NixOS Tmux Config Reloaded!"
+      # Pane borders
+      set -g pane-border-style "fg=#414868"
+      set -g pane-active-border-style "fg=#7aa2f7"
+
+      # Message / command line
+      set -g message-style "fg=#c0caf5,bg=#1a1b26"
+
+      ##### Reload #####
+      # Home Manager 實際生成的檔案通常在 ~/.config/tmux/tmux.conf
+      bind r source-file ~/.config/tmux/tmux.conf \; display-message "tmux.conf reloaded!"
     '';
   };
 }
