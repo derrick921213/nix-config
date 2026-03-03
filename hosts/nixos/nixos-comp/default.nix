@@ -181,6 +181,7 @@ in {
       yazi
       broot
       sshfs
+      filezilla
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris

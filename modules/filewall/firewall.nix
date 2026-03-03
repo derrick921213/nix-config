@@ -13,6 +13,7 @@ in {
       (lib.mkIf (hasTag "web") [80 443])
       (lib.mkIf (hasTag "minecraft") [25565])
       (lib.mkIf (hasTag "ssh") [22])
+      (lib.mkIf (hasTag "maygod") [8373])
     ];
 
     # 根據標籤自動開啟 UDP 埠口

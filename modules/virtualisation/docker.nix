@@ -12,6 +12,7 @@
     enable = true;
     enableOnBoot = true;
     autoPrune.enable = true;
+    extraOptions = "--userland-proxy=false";
     daemon.settings = {
       dns = ["1.1.1.1" "8.8.8.8"];
     };
