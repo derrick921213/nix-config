@@ -178,6 +178,9 @@ in {
       kdePackages.polkit-kde-agent-1
       libsecret
       dig
+      yazi
+      broot
+      sshfs
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
