@@ -5,7 +5,6 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    docker-buildx
     docker-compose
   ];
   virtualisation.docker = {
@@ -13,6 +12,9 @@
     enableOnBoot = true;
     autoPrune.enable = true;
     extraOptions = "--userland-proxy=false";
+    package = pkgs.docker.override {
+      buildxSupport = true;
+    };
     daemon.settings = {
       dns = ["1.1.1.1" "8.8.8.8"];
     };
