@@ -205,6 +205,9 @@ in {
       PermitRootLogin = "no";
     };
   };
+  security.pki.certificateFiles = [
+    ./AD_RootCA.pems
+  ];
   programs.nix-ld.dev.enable = true;
   system.stateVersion = "25.11";
 }
