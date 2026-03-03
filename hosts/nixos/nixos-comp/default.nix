@@ -206,7 +206,7 @@ in {
     };
   };
   security.pki.certificateFiles = [
-    ./AD_RootCA.pems
+    ./AD_RootCA.pem
   ];
   programs.nix-ld.dev.enable = true;
   system.stateVersion = "25.11";
