@@ -180,10 +180,10 @@ in {
       dig
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
-      bottles
       lutris
     ]);
 
+  services.flatpak.enable = true;
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
   programs.seahorse.enable = true;
