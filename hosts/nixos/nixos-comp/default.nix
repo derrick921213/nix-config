@@ -182,6 +182,7 @@ in {
       broot
       sshfs
       filezilla
+      bruno
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
