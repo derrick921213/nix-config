@@ -5,9 +5,9 @@
 }: {
   system = "x86_64-linux";
   user = "derrick";
-  hostip = "172.16.125.144";
+  hostip = "192.168.0.185";
   remoteBuild = true;
-  diskDevice = "/dev/nvme0n1";
+  diskDevice = "/dev/sda";
   extraModules = [
     (self + "/modules/filewall/firewall.nix")
     (self + "/modules/virtualisation/docker.nix")
@@ -19,7 +19,7 @@
   firewall-tags = ["ssh" "web" "maygod"];
   pkgsChannel = "stable";
   deployment = {
-    targetHost = "172.16.125.144";
+    targetHost = "192.168.0.185";
     targetUser = "derrick";
     targetPort = 22;
     buildOnTarget = true;
