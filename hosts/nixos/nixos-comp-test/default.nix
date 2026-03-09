@@ -140,7 +140,6 @@ in {
       lutris
     ]);
 
-  services.flatpak.enable = true;
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
   programs.seahorse.enable = true;
