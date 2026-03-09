@@ -183,6 +183,7 @@ in {
       sshfs
       filezilla
       bruno
+      glow
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
