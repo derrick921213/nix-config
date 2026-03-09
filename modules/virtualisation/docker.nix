@@ -17,7 +17,7 @@
     };
     daemon.settings = {
       dns = ["1.1.1.1" "8.8.8.8"];
-      "insecure-registries" = [ "192.168.0.242" ];
+      "insecure-registries" = [ "192.168.0.242" "192.168.0.242:5050"];
     };
   };
 
