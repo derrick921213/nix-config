@@ -1,0 +1,27 @@
+{
+  self,
+  inputs,
+  ...
+}: {
+  system = "x86_64-linux";
+  user = "derrick";
+  hostip = "172.16.125.144";
+  remoteBuild = true;
+  diskDevice = "/dev/nvme0n1";
+  extraModules = [
+    (self + "/modules/filewall/firewall.nix")
+    (self + "/modules/virtualisation/docker.nix")
+    inputs.disko.nixosModules.disko
+    inputs.nix-ld.nixosModules.nix-ld
+    ./disko.nix
+    ./hardware-configuration.nix
+  ];
+  firewall-tags = ["ssh" "web" "maygod"];
+  pkgsChannel = "stable";
+  deployment = {
+    targetHost = "172.16.125.144";
+    targetUser = "derrick";
+    targetPort = 22;
+    buildOnTarget = true;
+  };
+}
