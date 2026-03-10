@@ -16,7 +16,7 @@
     ./disko.nix
     ./hardware-configuration.nix
   ];
-  firewall-tags = ["ssh" "web" "maygod"];
+  firewall-tags = ["ssh" "web" "maygod" "npm"];
   pkgsChannel = "stable";
   deployment = {
     targetHost = "192.168.0.185";
