@@ -47,6 +47,18 @@
       bindkey -e
       compdef ll=eza
       compdef ls=eza
+      nix_prompt_segment() {
+        if [[ -n "''${IN_NIX_SHELL-}" || -n "''${NIX_SHELL-}" ]]; then
+          if [[ -n "''${name-}" ]]; then
+            echo "%{$fg[cyan]%}❄ ''${name}%{$reset_color%} "
+          else
+            echo "%{$fg[cyan]%}❄ nix%{$reset_color%} "
+          fi
+        fi
+      }
+      if [[ "$ZSH_THEME" == "ys" ]]; then
+        PROMPT='$(nix_prompt_segment)'"$PROMPT"
+      fi
     '';
   };
 
