@@ -188,6 +188,7 @@ in {
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
+      mold-wrapped
     ]);
 
   services.flatpak.enable = true;
