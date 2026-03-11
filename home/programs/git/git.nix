@@ -10,6 +10,13 @@
       init = {
         defaultBranch = "main";
       };
+      alias = {
+        st = "status";
+        co = "checkout";
+        ci = "commit";
+        br = "branch";
+        lg = "log --graph --oneline --all";
+      };
     };
   };
 }
