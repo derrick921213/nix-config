@@ -185,6 +185,7 @@ in {
       bruno
       glow
       lsof
+      pv
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
