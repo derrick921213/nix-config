@@ -9,7 +9,7 @@ case "$mode" in
     echo "W:window  R:resize  M:move  S:shot  A:apps  P:power  ESC/Space:exit"
     ;;
   window)
-    echo "HJKL:focus  Q:close  F:fullscreen  V:float  ESC:exit"
+    echo "HJKL:focus  Q:close  F:fullscreen  V:float  S: togglesplit  ESC:exit"
     ;;
   resize)
     echo "HJKL:resize  N:reflow  ESC:exit"
