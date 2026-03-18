@@ -15,10 +15,22 @@ in {
     supportedFilesystems = ["btrfs"];
   };
 
+  boot.kernelParams = [
+    # "snd_hda_intel.model=headset-mode"
+    # "snd_hda_intel.model=dell-headset-multi"
+    "snd_hda_intel.power_save=0"
+    "snd_hda_intel.power_save_controller=N"
+    # "snd_hda_intel.model=alc255-acer"
+    "snd_hda_intel.model=inv-jack-detect"
+    # "snd_hda_intel.model=alc897-desktop"
+  ];
+
   # boot.loader.grub.enable = true;
   # boot.loader.grub.device = "/dev/sda";
   # boot.loader.grub.useOSProber = true;
 
+  hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = lib.mkIf isX86_64 true;
@@ -95,6 +107,16 @@ in {
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
+    extraConfig.pipewire = {
+      "92-low-latency" = {
+        "context.properties" = {
+          "default.clock.rate" = 48000;
+          "default.clock.quantum" = 1024;
+          "default.clock.min-quantum" = 512;
+          "default.clock.max-quantum" = 2048;
+        };
+      };
+    };
   };
 
   virtualisation.vmware.guest = {
@@ -189,6 +211,7 @@ in {
       gobang
       sqlitebrowser
       cloudflare-warp
+      alsa-utils
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
