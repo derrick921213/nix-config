@@ -2,6 +2,22 @@
   imports = [
     ./core.nix
   ];
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    vista-fonts
+    corefonts
+  ];
+
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+  services.resolved.enable = true;
+  programs.dconf.enable = true;
+  programs.nix-ld.dev.enable = true;
+  security.rtkit.enable = true;
   networking.networkmanager.enable = true;
   i18n.defaultLocale = "zh_TW.UTF-8";
   i18n.extraLocaleSettings = {
@@ -44,4 +60,5 @@
       }
     ];
   };
+  system.stateVersion = "25.11";
 }

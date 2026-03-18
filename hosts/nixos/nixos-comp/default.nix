@@ -80,49 +80,49 @@ in {
   #   type = "fcitx5";
   # };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    vista-fonts
-    corefonts
-  ];
+  # fonts.packages = with pkgs; [
+  #   nerd-fonts.jetbrains-mono
+  #   noto-fonts-cjk-sans
+  #   noto-fonts-cjk-serif
+  #   vista-fonts
+  #   corefonts
+  # ];
 
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  # services.xserver.xkb = {
+  #   layout = "us";
+  #   variant = "";
+  # };
 
-  security.rtkit.enable = true;
-  security.pam.services.hyprlock = {};
-  security.pam.services.greetd.kwallet = {
-    enable = true;
-    package = pkgs.kdePackages.kwallet-pam;
-  };
+  # security.rtkit.enable = true;
+  # security.pam.services.hyprlock = {};
+  # security.pam.services.greetd.kwallet = {
+  #   enable = true;
+  #   package = pkgs.kdePackages.kwallet-pam;
+  # };
 
-  services.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    wireplumber.enable = true;
-    extraConfig.pipewire = {
-      "92-low-latency" = {
-        "context.properties" = {
-          "default.clock.rate" = 48000;
-          "default.clock.quantum" = 1024;
-          "default.clock.min-quantum" = 512;
-          "default.clock.max-quantum" = 2048;
-        };
-      };
-    };
-  };
+  # services.pulseaudio.enable = false;
+  # services.pipewire = {
+  #   enable = true;
+  #   alsa.enable = true;
+  #   alsa.support32Bit = true;
+  #   pulse.enable = true;
+  #   wireplumber.enable = true;
+  #   extraConfig.pipewire = {
+  #     "92-low-latency" = {
+  #       "context.properties" = {
+  #         "default.clock.rate" = 48000;
+  #         "default.clock.quantum" = 1024;
+  #         "default.clock.min-quantum" = 512;
+  #         "default.clock.max-quantum" = 2048;
+  #       };
+  #     };
+  #   };
+  # };
 
-  virtualisation.vmware.guest = {
-    enable = true;
-    headless = false;
-  };
+  # virtualisation.vmware.guest = {
+  #   enable = true;
+  #   headless = false;
+  # };
 
   # users.users.derrick = {
   #   isNormalUser = true;
@@ -219,14 +219,14 @@ in {
     ]);
   services.cloudflare-warp.enable = true;
   services.flatpak.enable = true;
-  services.resolved.enable = true;
+  # services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
   programs.seahorse.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.greetd.enableGnomeKeyring = true;
-  programs.dconf.enable = true;
-  security.pam.services.greetd.enableKwallet = true;
-  security.pam.services.login.kwallet.enable = true;
+  # services.gnome.gnome-keyring.enable = true;
+  # security.pam.services.greetd.enableGnomeKeyring = true;
+  # programs.dconf.enable = true;
+  # security.pam.services.greetd.enableKwallet = true;
+  # security.pam.services.login.kwallet.enable = true;
   environment.variables = {
     GASKPASS = "${pkgs.kdePackages.kdialog}/bin/kdialog";
   };
@@ -239,6 +239,6 @@ in {
   security.pki.certificateFiles = [
     ./AD_RootCA.pem
   ];
-  programs.nix-ld.dev.enable = true;
-  system.stateVersion = "25.11";
+  # programs.nix-ld.dev.enable = true;
+  # system.stateVersion = "25.11";
 }

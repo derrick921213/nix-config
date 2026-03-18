@@ -8,6 +8,14 @@
     KDE_SESSION_VERSION = "6";
     KDE_FULL_SESSION = "true";
   };
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.greetd.kwallet = {
+    enable = true;
+    package = pkgs.kdePackages.kwallet-pam;
+  };
+  security.pam.services.greetd.enableKwallet = true;
+  security.pam.services.login.kwallet.enable = true;
 
   services.greetd = {
     enable = true;

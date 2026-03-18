@@ -20,6 +20,8 @@
     config.knetattach.default = ["kde"];
   };
 
+  security.pam.services.hyprlock = {};
+
   environment.systemPackages = with pkgs; [
     cliphist
     wl-clipboard
