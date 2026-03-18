@@ -127,6 +127,7 @@
     "explorer.confirmDelete" = false;
     "workbench.activityBar.location" = "bottom";
     "window.customTitleBarVisibility" = "windowed";
+    "keyboard.dispatch"="keyCode";
   };
 in {
   inherit commonExtensions commonUserSettings;

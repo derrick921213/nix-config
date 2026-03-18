@@ -9,6 +9,16 @@ vim.opt.termguicolors = true
 
 -- Leader key
 vim.g.mapleader = " "
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    -- 檢查該 LSP 是否支援 inlayHint
+    if client and client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+    end
+  end,
+})
 
 --------------------------------------------------
 -- Plugin manager: lazy.nvim
@@ -151,7 +161,14 @@ vim.lsp.config("rust_analyzer", {
   settings = {
     ["rust-analyzer"] = {
       cargo = { allFeatures = true },
-      checkOnSave = { command = "clippy" },
+      checkOnSave = true,
+      inlayHints = {
+        bindingModeHints = { enable = false },
+        chainingHints = { enable = true },
+        closingBraceHints = { enable = true, minLines = 25 },
+        parameterHints = { enable = true },
+        typeHints = { enable = true },
+      },
     },
   },
 })
