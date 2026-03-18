@@ -54,31 +54,31 @@ in {
   #   ];
   # };
 
-  networking = {
-    hostName = hostname;
-    networkmanager.enable = true;
-  };
+  # networking = {
+  #   hostName = hostname;
+  #   networkmanager.enable = true;
+  # };
 
-  time.timeZone = "Asia/Taipei";
+  # time.timeZone = "Asia/Taipei";
 
-  i18n.defaultLocale = "zh_TW.UTF-8";
+  # i18n.defaultLocale = "zh_TW.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "zh_TW.UTF-8";
-    LC_IDENTIFICATION = "zh_TW.UTF-8";
-    LC_MEASUREMENT = "zh_TW.UTF-8";
-    LC_MONETARY = "zh_TW.UTF-8";
-    LC_NAME = "zh_TW.UTF-8";
-    LC_NUMERIC = "zh_TW.UTF-8";
-    LC_PAPER = "zh_TW.UTF-8";
-    LC_TELEPHONE = "zh_TW.UTF-8";
-    LC_TIME = "zh_TW.UTF-8";
-  };
+  # i18n.extraLocaleSettings = {
+  #   LC_ADDRESS = "zh_TW.UTF-8";
+  #   LC_IDENTIFICATION = "zh_TW.UTF-8";
+  #   LC_MEASUREMENT = "zh_TW.UTF-8";
+  #   LC_MONETARY = "zh_TW.UTF-8";
+  #   LC_NAME = "zh_TW.UTF-8";
+  #   LC_NUMERIC = "zh_TW.UTF-8";
+  #   LC_PAPER = "zh_TW.UTF-8";
+  #   LC_TELEPHONE = "zh_TW.UTF-8";
+  #   LC_TIME = "zh_TW.UTF-8";
+  # };
 
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-  };
+  # i18n.inputMethod = {
+  #   enable = true;
+  #   type = "fcitx5";
+  # };
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
@@ -124,40 +124,40 @@ in {
     headless = false;
   };
 
-  users.users.derrick = {
-    isNormalUser = true;
-    description = "derrick";
-    extraGroups = ["networkmanager" "wheel" "video" "audio"];
-    hashedPassword = "$6$imjFfK.gjd3R5Tb3$0qqFQPLqUZ9oFP38736p3Q.VZz9c0w1Uepdbf6.ulXhWJx1gcgO6zL0pYQqlCHmjPYTflm3wIT4eTswkvjNxf1";
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq3fqTChvwq6LS6MgIhUHtIAeTIt8NYtWLWeFM4fv0uqHBR8RGBpQICxUmhfuW4cIX3DfCTSlrmgStjQKJUGfR9LHHAJZfRc7eKlWDmj4h6Pfez+cv+dZp7i6FW4PbbKa5u0DnZqoUcjqsPBAW/xnNrKuFso2GBQDVL/ynvvwp/8o+wHUR5f4n6Gshy2uFTx35gtEXLMd/BA+I7scKch11R2QwYwWoTicl2ZIVYrS3H8fCmL/ecNaYuxAv/ilD4JPbthM3zxhid6CV/yR5cDG0slit69NX3EmHBmvmoPzRF0b6OICOfn7aqEqAk/mMkxrpRMpqC53QwRATRwWzDuzqd7NiLV9hVZ+uAuT6Dp/1BzgX8iEVN7rGsMKa5mdq+mlSdJ6dNeXKbgpTw931yz5aYp6pn1sBaWhP0dqqe34xddsmeJ5MBYSGkgyfz0+0gwErZ0UgryZ/i8zFKJfj4qf2EHzTyBfYGSPQ8JphCYL74n96ElpcFrEDVJK5FFOJUQ8= derrick@derrickdeMacBook-Pro.local"
-    ];
-  };
+  # users.users.derrick = {
+  #   isNormalUser = true;
+  #   description = "derrick";
+  #   extraGroups = ["networkmanager" "wheel" "video" "audio"];
+  #   hashedPassword = "$6$imjFfK.gjd3R5Tb3$0qqFQPLqUZ9oFP38736p3Q.VZz9c0w1Uepdbf6.ulXhWJx1gcgO6zL0pYQqlCHmjPYTflm3wIT4eTswkvjNxf1";
+  #   openssh.authorizedKeys.keys = [
+  #     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq3fqTChvwq6LS6MgIhUHtIAeTIt8NYtWLWeFM4fv0uqHBR8RGBpQICxUmhfuW4cIX3DfCTSlrmgStjQKJUGfR9LHHAJZfRc7eKlWDmj4h6Pfez+cv+dZp7i6FW4PbbKa5u0DnZqoUcjqsPBAW/xnNrKuFso2GBQDVL/ynvvwp/8o+wHUR5f4n6Gshy2uFTx35gtEXLMd/BA+I7scKch11R2QwYwWoTicl2ZIVYrS3H8fCmL/ecNaYuxAv/ilD4JPbthM3zxhid6CV/yR5cDG0slit69NX3EmHBmvmoPzRF0b6OICOfn7aqEqAk/mMkxrpRMpqC53QwRATRwWzDuzqd7NiLV9hVZ+uAuT6Dp/1BzgX8iEVN7rGsMKa5mdq+mlSdJ6dNeXKbgpTw931yz5aYp6pn1sBaWhP0dqqe34xddsmeJ5MBYSGkgyfz0+0gwErZ0UgryZ/i8zFKJfj4qf2EHzTyBfYGSPQ8JphCYL74n96ElpcFrEDVJK5FFOJUQ8= derrick@derrickdeMacBook-Pro.local"
+  #   ];
+  # };
 
-  security.sudo = {
-    enable = true;
-    execWheelOnly = false;
-    wheelNeedsPassword = true;
-    extraRules = [
-      {
-        users = ["derrick"];
-        host = "ALL";
-        runAs = "ALL:ALL";
-        commands = [
-          {
-            command = "ALL";
-            options = ["NOPASSWD"];
-          }
-        ];
-      }
-    ];
-  };
+  # security.sudo = {
+  #   enable = true;
+  #   execWheelOnly = false;
+  #   wheelNeedsPassword = true;
+  #   extraRules = [
+  #     {
+  #       users = ["derrick"];
+  #       host = "ALL";
+  #       runAs = "ALL:ALL";
+  #       commands = [
+  #         {
+  #           command = "ALL";
+  #           options = ["NOPASSWD"];
+  #         }
+  #       ];
+  #     }
+  #   ];
+  # };
 
-  nix.settings.trusted-users = [
-    "root"
-    "derrick"
-    "@wheel"
-  ];
+  # nix.settings.trusted-users = [
+  #   "root"
+  #   "derrick"
+  #   "@wheel"
+  # ];
 
   environment.systemPackages =
     (with pkgs; [

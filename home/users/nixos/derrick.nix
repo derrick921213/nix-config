@@ -33,17 +33,17 @@ in {
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-chewing
-      fcitx5-gtk
-      qt6Packages.fcitx5-configtool
-      fcitx5-tokyonight
-      fcitx5-nord
-    ];
-  };
+  # i18n.inputMethod = {
+  #   enable = true;
+  #   type = "fcitx5";
+  #   fcitx5.addons = with pkgs; [
+  #     fcitx5-chewing
+  #     fcitx5-gtk
+  #     qt6Packages.fcitx5-configtool
+  #     fcitx5-tokyonight
+  #     fcitx5-nord
+  #   ];
+  # };
   home.packages = with pkgs; [
     pkgs.libnotify
     pkgs.coreutils
