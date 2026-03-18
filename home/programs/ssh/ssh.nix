@@ -9,7 +9,7 @@
         identityFile = "~/.ssh/id_ed25519";
         identitiesOnly = true;
       };
-      "gitlab.com-out" = {
+      "github.com-out" = {
         hostname = "github.com";
         user = "git";
         identityFile = "~/.ssh/id_ed25519_out";
