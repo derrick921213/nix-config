@@ -186,6 +186,7 @@ in {
       glow
       lsof
       pv
+      gobang
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris

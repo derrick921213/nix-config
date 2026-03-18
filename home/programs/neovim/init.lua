@@ -90,6 +90,23 @@ require("lazy").setup({
         end,
   },
   {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      { 'tpope/vim-dadbod', lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
+    },
+    cmd = {
+      'DBUI',
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUIFindBuffer',
+    },
+    init = function()
+      -- Your DBUI configuration
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
+  {
     "kdheepak/lazygit.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
@@ -218,3 +235,12 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float)
 vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist)
+
+local api = require('Comment.api')
+-- 一般模式：按 <Leader>/ 註解當前行
+vim.keymap.set('n', '<leader>/', api.toggle.linewise.current, { desc = 'Comment line' })
+-- 可視模式：按 <Leader>/ 註解選取範圍
+vim.keymap.set('v', '<leader>/', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", { desc = 'Comment selection' })
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP Code Action (Import/Quickfix)' })
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to Definition' })
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show Documentation' })
