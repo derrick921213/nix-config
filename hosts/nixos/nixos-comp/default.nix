@@ -188,12 +188,13 @@ in {
       pv
       gobang
       sqlitebrowser
+      cloudflare-warp
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
       mold-wrapped
     ]);
-
+  services.cloudflare-warp.enable = true;
   services.flatpak.enable = true;
   services.resolved.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
