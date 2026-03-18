@@ -187,6 +187,7 @@ in {
       lsof
       pv
       gobang
+      sqlitebrowser
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
