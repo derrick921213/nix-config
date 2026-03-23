@@ -7,6 +7,11 @@
 }: let
   isX86_64 = pkgs.stdenv.hostPlatform.isx86_64;
 in {
+  boot.plymouth = {
+    enable = true;
+    # 你可以選擇主題，例如 "breeze", "fade-in", "glow" 等
+    theme = "bgrt";
+  };
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -14,7 +19,9 @@ in {
     };
     supportedFilesystems = ["btrfs"];
   };
-
+  boot.consoleLogLevel = 0;
+  boot.initrd.verbose = false;
+  boot.initrd.kernelModules = ["i915"];
   boot.kernelParams = [
     # "snd_hda_intel.model=headset-mode"
     # "snd_hda_intel.model=dell-headset-multi"
@@ -23,6 +30,13 @@ in {
     # "snd_hda_intel.model=alc255-acer"
     "snd_hda_intel.model=inv-jack-detect"
     # "snd_hda_intel.model=alc897-desktop"
+    "quiet"
+    "splash"
+    "boot.shell_on_fail"
+    "loglevel=3"
+    "rd.systemd.show_status=false"
+    "rd.udev.log_level=3"
+    "udev.log_priority=3"
   ];
 
   hardware.enableAllFirmware = true;
