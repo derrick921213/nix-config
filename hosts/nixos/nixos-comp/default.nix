@@ -12,6 +12,13 @@ in {
     # 你可以選擇主題，例如 "breeze", "fade-in", "glow" 等
     theme = "bgrt";
   };
+  boot.kernel.sysctl = {
+    "net.bridge.bridge-nf-call-iptables" = 1;
+    "net.bridge.bridge-nf-call-ip6tables" = 1;
+    "net.ipv4.conf.all.forwarding" = 1;
+    "net.ipv4.conf.all.route_localnet" = 1;
+    "net.ipv4.conf.lo.route_localnet" = 1;
+  };
   boot = {
     loader = {
       systemd-boot.enable = true;

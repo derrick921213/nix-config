@@ -9,7 +9,7 @@
 in {
   networking.firewall = {
     enable = true;
-    trustedInterfaces = ["docker0"];
+    trustedInterfaces = ["docker0" "br-bb0edbc530c2"];
     allowedTCPPorts = lib.mkMerge [
       (lib.mkIf (hasTag "web") [80 443])
       (lib.mkIf (hasTag "minecraft") [25565])

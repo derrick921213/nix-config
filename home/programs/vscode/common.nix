@@ -127,7 +127,13 @@
     "explorer.confirmDelete" = false;
     "workbench.activityBar.location" = "bottom";
     "window.customTitleBarVisibility" = "windowed";
-    "keyboard.dispatch"="keyCode";
+    "keyboard.dispatch" = "keyCode";
+    "[typescript]" = {
+      "editor.defaultFormatter" = "esbenp.prettier-vscode";
+    };
+    "[vue]" = {
+      "editor.defaultFormatter" = "Vue.volar";
+    };
   };
 in {
   inherit commonExtensions commonUserSettings;
