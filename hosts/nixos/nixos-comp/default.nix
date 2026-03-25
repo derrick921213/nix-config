@@ -106,6 +106,7 @@ in {
       cloudflare-warp
       alsa-utils
       winboat
+      freerdp
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
