@@ -52,6 +52,8 @@ in {
     enable = true;
     enable32Bit = lib.mkIf isX86_64 true;
   };
+  networking.networkmanager.plugins = with pkgs; [networkmanager-openvpn];
+  programs.openvpn3.enable = true;
   environment.systemPackages =
     (with pkgs; [
       vim
@@ -107,6 +109,8 @@ in {
       alsa-utils
       winboat
       freerdp
+      openvpn
+      networkmanager-openvpn
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
@@ -127,5 +131,20 @@ in {
   };
   security.pki.certificateFiles = [
     ./AD_RootCA.pem
+  ];
+  # programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+    # 如果還是報錯，可以再補這兩個
+    libgcc
+    glibc
   ];
 }
