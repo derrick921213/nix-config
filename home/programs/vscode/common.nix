@@ -134,6 +134,7 @@
     "[vue]" = {
       "editor.defaultFormatter" = "Vue.volar";
     };
+    "editor.foldingStrategy" = "indentation";
   };
 in {
   inherit commonExtensions commonUserSettings;
