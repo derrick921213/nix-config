@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   environment.systemPackages = [
     pkgs.uxplay
-    (makeDesktopItem {
+    (pkgs.makeDesktopItem {
       name = "uxplay-custom";
       desktopName = "iOS Mirror";
       exec = "uxplay -p -n \"Derrick-NixOS\"";
