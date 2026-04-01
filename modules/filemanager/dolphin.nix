@@ -18,6 +18,7 @@
     kservice
     cifs-utils
     glib
+    okular
   ];
   services.avahi = {
     enable = true;
