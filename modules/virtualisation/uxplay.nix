@@ -5,7 +5,7 @@
       name = "uxplay-custom";
       desktopName = "iOS Mirror";
       exec = "uxplay -p -n \"Derrick-NixOS\"";
-      icon = "~/.config/icon/Airplay.png";
+      icon = "/home/derrick/.config/icon/Airplay.png";
       terminal = false;
       categories = ["Utility"];
     })
