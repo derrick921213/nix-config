@@ -17,6 +17,7 @@
     (self + "/modules/virtualisation/docker.nix")
     (self + "/modules/virtualisation/waydroid.nix")
     (self + "/modules/virtualisation/virt-qemu.nix")
+    (self + "/modules/virtualisation/uxplay.nix")
     (self + "/modules/sound/sound-manage.nix")
     # inputs.disko.nixosModules.disko
     inputs.nix-ld.nixosModules.nix-ld
