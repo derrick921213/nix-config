@@ -21,12 +21,14 @@
   ];
   services.avahi = {
     enable = true;
-    nssmdns4 = true;
+    nssmdns = true;
     openFirewall = true;
     publish = {
       enable = true;
       addresses = true;
       workstation = true;
+      userServices = true;
+      domain = true;
     };
   };
   services.gvfs = {
