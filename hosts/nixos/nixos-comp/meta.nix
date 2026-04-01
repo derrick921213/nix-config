@@ -15,6 +15,7 @@
     (self + "/modules/desktop/qtile.nix")
     (self + "/modules/filemanager/dolphin.nix")
     (self + "/modules/virtualisation/docker.nix")
+    (self + "/modules/virtualisation/waydroid.nix")
     (self + "/modules/virtualisation/virt-qemu.nix")
     (self + "/modules/sound/sound-manage.nix")
     # inputs.disko.nixosModules.disko
