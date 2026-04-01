@@ -111,6 +111,7 @@ in {
       freerdp
       openvpn
       networkmanager-openvpn
+      unzip
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
