@@ -112,6 +112,7 @@ in {
       openvpn
       networkmanager-openvpn
       unzip
+      zellij
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
