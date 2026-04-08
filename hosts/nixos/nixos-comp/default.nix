@@ -52,7 +52,7 @@ in {
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
     enable32Bit = lib.mkIf isX86_64 true;
