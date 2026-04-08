@@ -19,6 +19,7 @@
     (self + "/modules/virtualisation/virt-qemu.nix")
     (self + "/modules/virtualisation/uxplay.nix")
     (self + "/modules/sound/sound-manage.nix")
+    (self + "/modules/virtualisation/scrcpy.nix")
     # inputs.disko.nixosModules.disko
     inputs.nix-ld.nixosModules.nix-ld
     # ./disko.nix
