@@ -50,6 +50,11 @@ in {
   hardware.enableRedistributableFirmware = true;
   hardware.graphics = {
     enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
     enable32Bit = lib.mkIf isX86_64 true;
   };
   networking.networkmanager.plugins = with pkgs; [networkmanager-openvpn];
