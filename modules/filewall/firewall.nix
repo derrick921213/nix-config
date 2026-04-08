@@ -16,6 +16,7 @@ in {
       (lib.mkIf (hasTag "ssh") [22])
       (lib.mkIf (hasTag "maygod") [8373])
       (lib.mkIf (hasTag "npm") [81])
+      (lib.mkIf (hasTag "localsend") [53317])
     ];
     checkReversePath = "loose";
     # 根據標籤自動開啟 UDP 埠口
