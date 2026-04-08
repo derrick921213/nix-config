@@ -1,4 +1,8 @@
-{user, ...}: {
+{
+  user,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     scrcpy
   ];
