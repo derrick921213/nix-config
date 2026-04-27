@@ -78,6 +78,7 @@ in {
       kdePackages.kwallet-pam
       kdePackages.kwalletmanager
       kdePackages.kdialog
+      kdePackages.ark
       nomacs
       vlc
       audacity
@@ -120,6 +121,10 @@ in {
       zellij
       remmina
       rustdesk
+      sourcegit
+      zip
+      p7zip
+      unrar
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
@@ -138,9 +143,9 @@ in {
       PermitRootLogin = "no";
     };
   };
-  security.pki.certificateFiles = [
-    ./AD_RootCA.pem
-  ];
+  # security.pki.certificateFiles = [
+  #   ./AD_RootCA.pem
+  # ];
   # programs.nix-ld.enable = true;
 
   programs.nix-ld.libraries = with pkgs; [
