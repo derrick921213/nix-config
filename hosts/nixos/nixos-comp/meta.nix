@@ -25,7 +25,7 @@
     # ./disko.nix
     ./hardware-configuration.nix
   ];
-  firewall-tags = ["ssh" "web" "maygod" "npm" "localsend"];
+  firewall-tags = ["ssh" "web" "maygod" "npm" "localsend" "vnc"];
   pkgsChannel = "stable";
   deployment = {
     targetHost = "172.16.125.144";
