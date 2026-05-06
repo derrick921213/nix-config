@@ -125,12 +125,16 @@ in {
       zip
       p7zip
       unrar
+      osv-scanner
     ])
     ++ lib.optionals isX86_64 (with pkgs; [
       lutris
       mold-wrapped
     ]);
   services.cloudflare-warp.enable = true;
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "Hyperland";
+  services.xrdp.openFirewall = true;
   services.flatpak.enable = true;
   services.udev.packages = [pkgs.brightnessctl pkgs.networkmanagerapplet];
   programs.seahorse.enable = true;

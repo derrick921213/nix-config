@@ -150,6 +150,7 @@
       "*.sdb" = "\${capture}.\${extname}-*";
       "*.s3db" = "\${capture}.\${extname}-*";
     };
+    "terminal.integrated.tabs.title" = "\${sequence} - \${process}";
   };
 in {
   inherit commonExtensions commonUserSettings;
