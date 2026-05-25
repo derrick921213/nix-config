@@ -151,9 +151,6 @@ in {
   # security.pki.certificateFiles = [
   #   ./AD_RootCA.pem
   # ];
-  security.pki.caCertificateBlacklist = [
-    "AD Root CA"
-  ];
   # programs.nix-ld.enable = true;
 
   programs.nix-ld.libraries = with pkgs; [
