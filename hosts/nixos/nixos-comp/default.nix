@@ -151,6 +151,9 @@ in {
   # security.pki.certificateFiles = [
   #   ./AD_RootCA.pem
   # ];
+  security.pki.certificateBlacklist = [
+    (builtins.readFile ./AD_RootCA.pem)
+  ];
   # programs.nix-ld.enable = true;
 
   programs.nix-ld.libraries = with pkgs; [
