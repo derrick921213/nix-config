@@ -4,6 +4,11 @@
     languagePacks = ["zh-TW" "en"];
 
     policies = {
+      Certificates = {
+        Uninstall = [
+          "AD Root CA"
+        ];
+      };
       DisableTelemetry = true;
       AppAutoUpdate = false;
       BackgroundAppUpdate = false;
