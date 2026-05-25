@@ -152,7 +152,7 @@ in {
   #   ./AD_RootCA.pem
   # ];
   security.pki.caCertificateBlacklist = [
-    (builtins.readFile ./AD_RootCA.pem)
+    "AD Root CA"
   ];
   # programs.nix-ld.enable = true;
 
