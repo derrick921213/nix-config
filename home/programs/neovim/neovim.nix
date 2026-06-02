@@ -11,6 +11,7 @@
     tree-sitter
     ripgrep
     lazygit
+    wl-clipboard
   ];
   home.file.".config/nvim/init.lua".source = ./init.lua;
 }

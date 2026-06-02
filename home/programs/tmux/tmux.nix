@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs.tmux = {
     enable = true;
     shortcut = "b";
@@ -73,6 +75,8 @@
 
       # Message / command line
       set -g message-style "fg=#c0caf5,bg=#1a1b26"
+
+      set -s set-clipboard on
 
       ##### Reload #####
       # Home Manager 實際生成的檔案通常在 ~/.config/tmux/tmux.conf

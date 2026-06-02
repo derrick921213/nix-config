@@ -52,7 +52,7 @@ require("lazy").setup({
     build = ":TSUpdate" ,
     config = function()
         require("nvim-treesitter.config").setup({
-            ensure_installed = { "rust", "nix", "lua", "toml", "json", "yaml" },
+            ensure_installed = { "rust", "nix", "lua", "toml", "json", "yaml", "vue", "pug" },
             highlight = { enable = true },
         })
     end,
@@ -244,3 +244,15 @@ vim.keymap.set('v', '<leader>/', "<ESC><cmd>lua require('Comment.api').toggle.li
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP Code Action (Import/Quickfix)' })
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to Definition' })
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show Documentation' })
+vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    },
+}
+vim.opt.clipboard = "unnamedplus"
